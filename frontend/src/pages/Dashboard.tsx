@@ -378,9 +378,9 @@ export function Dashboard() {
                 </PieChart>
               </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="text-center w-20 sm:w-24">
+                  <div className="text-center w-28 sm:w-32">
                     <p className="text-sm sm:text-lg font-bold text-(--accent) font-display leading-tight">
-                      {formatPln(chartFilteredData.expensesTotal)}
+                      <span className="whitespace-nowrap">{formatNumberPl(chartFilteredData.expensesTotal)}</span> zł
                     </p>
                     <p className="text-xs text-(--text-muted) font-display mt-0.5">{t('total')}</p>
                   </div>

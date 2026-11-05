@@ -41,6 +41,7 @@ import { ModalShell } from '../components/ModalShell'
 import { ConfirmDialog } from '../components/ConfirmDialog'
 import { useIsMobile } from '../hooks/useIsMobile'
 import { TODO_ITEM_SPRING } from '../lib/todoMotion'
+import { formatNumberPl } from '../lib/currency'
 
 /** When there are no entries — show this many days ending today (no artificial history). */
 const EMPTY_GRID_DAYS = 10
@@ -2411,7 +2412,7 @@ export function Habits() {
                         <p className="mb-1.5 text-base text-(--text-muted)">
                           {t('habitsCard.lastNDaysLabel', { count: SUM_LAST_DAYS })}
                           {sumLastPeriod > 0
-                            ? ` · ${sumLastPeriod.toLocaleString('pl-PL')}${habit.unit ? ` ${habit.unit}` : ''}`
+                            ? ` · ${formatNumberPl(sumLastPeriod)}${habit.unit ? ` ${habit.unit}` : ''}`
                             : ''}
                         </p>
                       )}
@@ -3180,13 +3181,13 @@ export function Habits() {
                     {/* Subline: progress + insight */}
                     <p className="mb-3 text-base text-(--text-muted)">
                       {t('goalsCard.progressSummary', {
-                        current: goal.current.toLocaleString('pl-PL'),
-                        target: goal.target.toLocaleString('pl-PL'),
+                        current: formatNumberPl(goal.current),
+                        target: formatNumberPl(goal.target),
                         unit: goal.unit ? ` ${goal.unit}` : '',
                       })}
                       {remaining > 0
                         ? t('goalsCard.remainingSuffix', {
-                            remaining: remaining.toLocaleString('pl-PL'),
+                            remaining: formatNumberPl(remaining),
                             unit: goal.unit ? ` ${goal.unit}` : '',
                           })
                         : t('goalsCard.achievedSuffix')}

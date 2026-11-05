@@ -448,8 +448,10 @@ export function Transactions() {
                     key={`${tx.type}-${tx.id}`}
                     className="border-b border-(--border)/50 hover:bg-(--bg-dark)/50"
                   >
-                    <td className="py-3 pr-4 text-base font-mono whitespace-nowrap text-(--text-primary)">{tx.date}</td>
-                    <td className="py-3 pr-4 text-base font-medium text-(--text-primary)">{capitalizeFirstPl(tx.name)}</td>
+                    <td className="py-3 pr-4 text-base whitespace-nowrap tabular-nums text-(--text-primary)" title={tx.date}>
+                      {formatTxDate(tx.date, i18n.language === 'pl' ? 'pl-PL' : 'en-US')}
+                    </td>
+                    <td className="w-full py-3 pr-4 text-base font-medium text-(--text-primary) [overflow-wrap:anywhere]">{capitalizeFirstPl(tx.name)}</td>
                     <td className="py-3">
                       {showCategoryPill ? (
                         <span
@@ -467,14 +469,14 @@ export function Transactions() {
                       <PaymentMethodBadge method={tx.paymentMethod} />
                     </td>
                     <td
-                      className={`py-3 pl-4 text-right text-base font-medium font-mono whitespace-nowrap ${
+                      className={`py-3 pl-4 text-right text-base font-medium tabular-nums whitespace-nowrap ${
                         tx.amount >= 0 ? 'text-(--tx-income)' : 'text-(--tx-expense)'
                       }`}
                     >
                       {tx.amount >= 0 ? '+' : ''}
                       {formatPln(tx.amount)}
                       {tx.currency && tx.currency !== 'PLN' && tx.originalAmount != null && (
-                        <span className="ml-1.5 text-sm font-sans font-normal text-(--text-muted)">
+                        <span className="ml-1.5 text-sm font-normal text-(--text-muted)">
                           ({formatCurrencyAmount(tx.originalAmount, tx.currency as Currency)})
                         </span>
                       )}
@@ -524,7 +526,7 @@ export function Transactions() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <p className="text-base font-semibold leading-snug text-(--text-primary)">
+                    <p className="text-base font-semibold leading-snug text-(--text-primary) [overflow-wrap:anywhere]">
                       {capitalizeFirstPl(tx.name)}
                     </p>
                     <p className="mt-0.5 text-sm text-(--text-muted)">{formatTxDate(tx.date, i18n.language === 'pl' ? 'pl-PL' : 'en-US')}</p>

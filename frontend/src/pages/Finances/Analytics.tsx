@@ -623,9 +623,9 @@ export function Analytics() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                  <div className="w-24 text-center">
+                  <div className="w-28 text-center sm:w-32">
                     <p className="text-base font-bold leading-tight text-(--accent) font-display sm:text-lg">
-                      {formatPln(expensesTotal)}
+                      <span className="whitespace-nowrap">{formatNumberPl(expensesTotal)}</span> zł
                     </p>
                     <p className="mt-0.5 text-xs text-(--text-muted)">{t('analytics.totalShort')}</p>
                   </div>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { Card } from '../Card'
 import { dashboardSectionStaggerVariants, getDashboardTileVariants } from '../../lib/dashboardMotion'
+import { formatNumberPl } from '../../lib/currency'
 
 function formatEventDate(dateStr: string, locale: string): string {
   const [y, m, d] = dateStr.split('-').map(Number)
@@ -103,7 +104,7 @@ export function DashboardQuickStats({
                           />
                         </div>
                         <span className="text-sm text-(--text-muted) shrink-0 font-mono">
-                          {g.current}/{g.target} {g.unit ?? ''}
+                          {formatNumberPl(g.current)}/{formatNumberPl(g.target)} {g.unit ?? ''}
                         </span>
                       </div>
                     </div>

@@ -360,16 +360,17 @@ export function Overview() {
         </Card>
         <Card className="border-(--border) max-md:p-4 md:p-7!" animateEntrance={false}>
           <p className="mb-4 text-base text-(--text-muted) md:mb-5">{t('overview.quickActions')}</p>
-          <div className="flex flex-col gap-2 sm:grid sm:grid-cols-3 sm:gap-2">
+          <div className="@container">
+          <div className="flex flex-col gap-2 @md:grid @md:grid-cols-3">
             <button
               type="button"
               onClick={() => {
                 setTxType('expense')
                 setShowTxModal(true)
               }}
-              className="inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg border border-(--tx-expense)/40 bg-(--tx-expense)/15 px-3 py-2.5 text-sm font-medium text-(--tx-expense) sm:gap-1.5 sm:px-2 sm:py-2 sm:text-xs"
+              className="inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg border border-(--tx-expense)/40 bg-(--tx-expense)/15 px-3 py-2.5 text-sm font-medium text-(--tx-expense) @md:gap-1.5 @md:px-2 @md:py-2 @md:text-xs"
             >
-              <Plus className="h-4 w-4 shrink-0 sm:h-[18px] sm:w-[18px]" strokeWidth={2.25} />
+              <Plus className="h-4 w-4 shrink-0 @md:h-[18px] @md:w-[18px]" strokeWidth={2.25} />
               <span className="truncate">{t('overview.quickActionExpense')}</span>
             </button>
             <button
@@ -378,19 +379,20 @@ export function Overview() {
                 setTxType('income')
                 setShowTxModal(true)
               }}
-              className="inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg border border-(--positive)/40 bg-(--positive)/15 px-3 py-2.5 text-sm font-medium text-(--positive) sm:gap-1.5 sm:px-2 sm:py-2 sm:text-xs"
+              className="inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg border border-(--positive)/40 bg-(--positive)/15 px-3 py-2.5 text-sm font-medium text-(--positive) @md:gap-1.5 @md:px-2 @md:py-2 @md:text-xs"
             >
-              <Plus className="h-4 w-4 shrink-0 sm:h-[18px] sm:w-[18px]" strokeWidth={2.25} />
+              <Plus className="h-4 w-4 shrink-0 @md:h-[18px] @md:w-[18px]" strokeWidth={2.25} />
               <span className="truncate">{t('overview.quickActionIncome')}</span>
             </button>
             <button
               type="button"
               onClick={() => setShowRecurringModal(true)}
-              className="inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg border border-(--warning)/40 bg-(--warning)/15 px-3 py-2.5 text-sm font-medium text-(--warning) sm:gap-1.5 sm:px-2 sm:py-2 sm:text-xs"
+              className="inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg border border-(--warning)/40 bg-(--warning)/15 px-3 py-2.5 text-sm font-medium text-(--warning) @md:gap-1.5 @md:px-2 @md:py-2 @md:text-xs"
             >
-              <Plus className="h-4 w-4 shrink-0 sm:h-[18px] sm:w-[18px]" strokeWidth={2.25} />
+              <Plus className="h-4 w-4 shrink-0 @md:h-[18px] @md:w-[18px]" strokeWidth={2.25} />
               <span className="truncate">{t('overview.quickActionRecurring')}</span>
             </button>
+          </div>
           </div>
         </Card>
       </motion.div>
