@@ -1,6 +1,6 @@
 [English](README.md) · **Polski**
 
-# LifeOS
+# Tallyo
 
 Osobisty panel do codziennych spraw: **finanse**, **produktywność** (to-do, kalendarz, nawyki, cele), **nauka** i **notatki**. Interfejs w klimacie **gaming / cyberpunk** — pod realne używanie, nie tylko pod mock-up.
 
@@ -77,8 +77,8 @@ ARCHITECTURE, OpenAPI i pełny przewodnik wdrożenia w chmurze **nie są** jeszc
 ### 1. Sklonuj i zainstaluj
 
 ```bash
-git clone https://github.com/<twoj-user>/LifeOS.git
-cd LifeOS
+git clone https://github.com/<twoj-user>/Tallyo.git
+cd Tallyo
 npm install
 cd frontend && npm install && cd ..
 cd backend && npm install && cd ..
@@ -130,7 +130,7 @@ Więcej: [PL](docs/URUCHOMIENIE.md) · [EN](docs/URUCHOMIENIE.en.md).
 
 #### B) Pełna aplikacja (konto + PostgreSQL)
 
-1. Utwórz bazę PostgreSQL (np. `lifeos`), ustaw `DATABASE_URL` w `backend/.env`.
+1. Utwórz bazę PostgreSQL (np. `tallyo`), ustaw `DATABASE_URL` w `backend/.env`.
 2. Wygeneruj silny `JWT_SECRET` (min. 32 znaki) — **nie** publiczny przykład z tutoriali.
 3. `frontend/.env`: `VITE_DEMO_MODE=false`, `VITE_API_PORT` = `PORT` backendu.
 4. Migracje i start:

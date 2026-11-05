@@ -131,9 +131,9 @@ describe('getCorsOrigins', () => {
 
   it('production: returns only FRONTEND_URL when set', async () => {
     process.env.NODE_ENV = 'production'
-    process.env.FRONTEND_URL = 'https://lifeos.example.com'
+    process.env.FRONTEND_URL = 'https://tallyo.example.com'
     const { getCorsOrigins } = await loadConfig()
-    expect(getCorsOrigins()).toEqual(['https://lifeos.example.com'])
+    expect(getCorsOrigins()).toEqual(['https://tallyo.example.com'])
   })
 
   it('dev mode: includes localhost ports and filters out unset FRONTEND_URL', async () => {

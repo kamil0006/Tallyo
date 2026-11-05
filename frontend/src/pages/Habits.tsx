@@ -57,7 +57,7 @@ const SUM_LAST_DAYS = 10
 /** Default habit chart range (last N days). */
 const HABIT_CHART_DEFAULT_DAYS = 30
 
-const HABIT_ACCENT_STORAGE_KEY = 'lifeos-habit-accents-v1'
+const HABIT_ACCENT_STORAGE_KEY = 'tallyo-habit-accents-v1'
 
 const CHECK_IN_STATUS_ORDER: HabitCheckInStatus[] = ['done', 'missed', 'skipped']
 

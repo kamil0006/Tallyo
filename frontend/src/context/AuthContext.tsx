@@ -3,7 +3,7 @@ import { queryClient } from '../lib/queryClient'
 import { authApi, type AuthUser } from '../lib/api/authApi'
 import { onApiAuthEvent } from '../lib/api/client'
 
-const DEMO_SESSION_KEY = 'lifeos_demo_session'
+const DEMO_SESSION_KEY = 'tallyo_demo_session'
 const LEGACY_TOKEN_KEY = 'lifeos_token'
 const LEGACY_USER_KEY = 'lifeos_user'
 
@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     clearLegacyAuthStorage()
 
     if (localStorage.getItem(DEMO_SESSION_KEY) === 'true') {
-      setUser({ id: 'demo', email: 'demo@lifeos.app' })
+      setUser({ id: 'demo', email: 'demo@tallyo.app' })
       setSessionReady(true)
       return
     }
@@ -109,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const enterDemoMode = () => {
     queryClient.clear()
     clearLegacyAuthStorage()
-    setUser({ id: 'demo', email: 'demo@lifeos.app' })
+    setUser({ id: 'demo', email: 'demo@tallyo.app' })
     setDemoSession(true)
     setSessionReady(true)
   }

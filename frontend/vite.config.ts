@@ -22,8 +22,8 @@ export default defineConfig(({ mode }) => {
           'icons/apple-touch-icon.png',
         ],
         manifest: {
-          name: 'LifeOS',
-          short_name: 'LifeOS',
+          name: 'Tallyo',
+          short_name: 'Tallyo',
           description: 'Osobisty dashboard — finanse, produktywność, nawyki, nauka',
           theme_color: '#111315',
           background_color: '#111315',

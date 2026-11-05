@@ -77,14 +77,14 @@ const pad = (m: number, d: number) =>
   `${currentYear}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
 
 const DEMO_SESSIONS: LearningSession[] = [
-  { id: '1', date: pad(4, 28), minutes: 180, topic: 'LifeOS', type: 'projekt', category: 'Backend' },
+  { id: '1', date: pad(4, 28), minutes: 180, topic: 'Tallyo', type: 'projekt', category: 'Backend' },
   { id: '2', date: pad(4, 27), minutes: 120, topic: 'Backend API', type: 'projekt', category: 'Backend' },
   { id: '3', date: pad(4, 25), minutes: 240, topic: 'Node.js API', type: 'kurs', category: 'Backend' },
   { id: '4', date: pad(4, 22), minutes: 90, topic: 'Powtórka algorytmów', type: 'powtorka', category: 'Algorytmy' },
   { id: '5', date: pad(4, 20), minutes: 300, topic: 'React + TypeScript', type: 'kurs', category: 'Frontend' },
   { id: '6', date: pad(3, 28), minutes: 180, topic: 'Czysty Kod', type: 'ksiazka', category: 'Programowanie' },
   { id: '7', date: pad(3, 15), minutes: 150, topic: 'PostgreSQL', type: 'kurs', category: 'Backend' },
-  { id: '8', date: pad(3, 8), minutes: 240, topic: 'LifeOS backend', type: 'projekt', category: 'Backend' },
+  { id: '8', date: pad(3, 8), minutes: 240, topic: 'Tallyo backend', type: 'projekt', category: 'Backend' },
   { id: '9', date: pad(2, 18), minutes: 180, topic: 'TypeScript generics', type: 'praktyka', category: 'Frontend' },
   { id: '10', date: pad(1, 10), minutes: 120, topic: 'Pragmatyczny Programista', type: 'ksiazka', category: 'Programowanie' },
 ]
@@ -124,11 +124,11 @@ const DEMO_COURSES: Course[] = [
 const DEMO_PROJECTS: Project[] = [
   {
     id: '1',
-    name: 'LifeOS',
+    name: 'Tallyo',
     description: 'Aplikacja do zarządzania życiem',
     tech: 'React, Node, PostgreSQL',
     status: 'w_trakcie',
-    githubUrl: 'https://github.com/example/lifeos',
+    githubUrl: 'https://github.com/example/tallyo',
     priority: 'wysoki',
     nextStep: 'Zaimplementować sekcję nauki',
   },

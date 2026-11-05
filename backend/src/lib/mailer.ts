@@ -5,7 +5,7 @@ import { isProduction } from './config.js'
 const RESEND_ENDPOINT = 'https://api.resend.com/emails'
 /** Resend's shared sender — works without a verified domain, but only
  *  delivers to the Resend account owner's own address. */
-const DEFAULT_FROM = 'LifeOS <onboarding@resend.dev>'
+const DEFAULT_FROM = 'Tallyo <onboarding@resend.dev>'
 
 export function isMailerConfigured(): boolean {
   return Boolean(process.env.RESEND_API_KEY?.trim())
@@ -33,9 +33,9 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string): Prom
     body: JSON.stringify({
       from,
       to: [to],
-      subject: 'LifeOS — reset hasła',
+      subject: 'Tallyo — reset hasła',
       text: [
-        'Ktoś (mamy nadzieję, że Ty) poprosił o reset hasła do LifeOS.',
+        'Ktoś (mamy nadzieję, że Ty) poprosił o reset hasła do Tallyo.',
         '',
         `Ustaw nowe hasło klikając w link (ważny przez 1 godzinę):`,
         resetUrl,
@@ -43,7 +43,7 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string): Prom
         'Jeśli to nie Ty — zignoruj tę wiadomość, hasło pozostaje bez zmian.',
       ].join('\n'),
       html: [
-        '<p>Ktoś (mamy nadzieję, że Ty) poprosił o reset hasła do <strong>LifeOS</strong>.</p>',
+        '<p>Ktoś (mamy nadzieję, że Ty) poprosił o reset hasła do <strong>Tallyo</strong>.</p>',
         `<p><a href="${resetUrl}">Ustaw nowe hasło</a> — link jest ważny przez 1 godzinę.</p>`,
         '<p>Jeśli to nie Ty — zignoruj tę wiadomość, hasło pozostaje bez zmian.</p>',
       ].join('\n'),

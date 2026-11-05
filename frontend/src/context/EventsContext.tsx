@@ -81,8 +81,8 @@ function getDemoEvents(year: number): DemoEvent[] {
 
 const currentYear = new Date().getFullYear()
 const INITIAL_DEMO_EVENTS = getDemoEvents(currentYear)
-const EVENT_CATEGORY_STORAGE_PREFIX = 'lifeos_event_categories_v1'
-const EVENT_RECURRENCE_STORAGE_PREFIX = 'lifeos_event_recurrence_v1'
+const EVENT_CATEGORY_STORAGE_PREFIX = 'tallyo_event_categories_v1'
+const EVENT_RECURRENCE_STORAGE_PREFIX = 'tallyo_event_recurrence_v1'
 
 const defaultEventCategories = DEFAULT_EVENT_CATEGORIES.map((category) => ({ ...category }))
 

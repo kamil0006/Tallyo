@@ -1,6 +1,6 @@
 **English** · [Polski](README.pl.md)
 
-# LifeOS
+# Tallyo
 
 Personal dashboard for everyday life: **finances**, **productivity** (to-do, calendar, habits, goals), **learning**, and **notes**. Gaming / cyberpunk UI — built for real daily use, not a static mock-up.
 
@@ -77,8 +77,8 @@ Architecture, OpenAPI, and step-by-step cloud deployment guides are **not** full
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/<your-username>/LifeOS.git
-cd LifeOS
+git clone https://github.com/<your-username>/Tallyo.git
+cd Tallyo
 npm install
 cd frontend && npm install && cd ..
 cd backend && npm install && cd ..
@@ -130,7 +130,7 @@ More detail: [Getting started (EN)](docs/URUCHOMIENIE.en.md) · [Uruchomienie (P
 
 #### B) Full app (your account + PostgreSQL)
 
-1. Create a PostgreSQL database (e.g. `lifeos`), set `DATABASE_URL` in `backend/.env`.
+1. Create a PostgreSQL database (e.g. `tallyo`), set `DATABASE_URL` in `backend/.env`.
 2. Generate a strong `JWT_SECRET` (min. 32 characters) — not a public example from tutorials.
 3. `frontend/.env`: `VITE_DEMO_MODE=false`, `VITE_API_PORT` = backend `PORT`.
 4. Migrate and start:
