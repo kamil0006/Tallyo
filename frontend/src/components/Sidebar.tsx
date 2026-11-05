@@ -78,8 +78,8 @@ export function AppNavPanel({ onNavigate, mobileClose }: AppNavPanelProps) {
               className="block text-xl font-bold tracking-widest font-display hover:opacity-90 transition-opacity outline-none focus:outline-none"
               title={t('homeAria')}
             >
-              <span className="text-(--accent)">Life</span>
-              <span className="text-(--text-primary)">OS</span>
+              <span className="text-(--accent)">Tally</span>
+              <span className="text-(--text-primary)">o</span>
             </Link>
             <p className="text-sm text-(--text-muted) mt-1 font-mono tracking-wider">{t('version')}</p>
             <div className="mt-2 grid grid-cols-[2.75rem_minmax(0,1fr)] gap-2">

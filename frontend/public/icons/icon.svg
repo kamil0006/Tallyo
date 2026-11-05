@@ -35,7 +35,7 @@
   <!-- Linia akcentu jak na kartach -->
   <rect x="0" y="0" width="512" height="2" fill="url(#topLine)"/>
 
-  <!-- Wordmark jak w nagłówku: Life (cyan) + OS (primary) -->
+  <!-- Wordmark jak w nagłówku: Tally (cyan) + o (primary) -->
   <text
     x="256"
     y="292"
@@ -45,6 +45,6 @@
     letter-spacing="6"
     text-anchor="middle"
   >
-    <tspan fill="url(#lifeGrad)" filter="url(#lifeGlow)">Life</tspan><tspan fill="#e8e8f5">OS</tspan>
+    <tspan fill="url(#lifeGrad)" filter="url(#lifeGlow)">Tally</tspan><tspan fill="#e8e8f5">o</tspan>
   </text>
 </svg>

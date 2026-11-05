@@ -34,7 +34,7 @@
       letter-spacing="5"
       text-anchor="middle"
     >
-      <tspan fill="url(#lifeGrad)" filter="url(#lifeGlow)">Life</tspan><tspan fill="#e8e8f5">OS</tspan>
+      <tspan fill="url(#lifeGrad)" filter="url(#lifeGlow)">Tally</tspan><tspan fill="#e8e8f5">o</tspan>
     </text>
   </g>
 </svg>
