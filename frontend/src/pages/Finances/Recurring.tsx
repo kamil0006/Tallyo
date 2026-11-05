@@ -18,7 +18,7 @@ import { invalidateFinanceQueries } from '../../lib/invalidateFinanceQueries'
 import { PaymentMethodBadge } from '../../components/finance/PaymentMethodPicker'
 import type { ScheduledExpenseRow } from '../../lib/financeTypes'
 import type { PaymentMethod } from '../../lib/paymentMethod'
-import { formatCurrencyAmount, type Currency } from '../../lib/currency'
+import { formatCurrencyAmount, type Currency, formatPln, formatNumberPl } from '../../lib/currency'
 
 /** Next payment date (same logic as the existing date preview). */
 function getNextPaymentDate(dayOfMonth: number): Date {
@@ -161,9 +161,9 @@ export function Recurring() {
       <Card className="border-(--warning)/20 max-md:p-4">
         <p className="text-base text-(--text-muted)">{t('recurring.monthlyTotal')}</p>
         <p className="mt-1 text-2xl font-bold font-display text-(--warning)">
-          {total.toLocaleString('pl-PL')} zł
+          {formatPln(total)}
         </p>
-        <p className="mt-1 text-sm text-(--text-muted) sm:text-base">{t('recurring.annually', { amount: annualTotal.toLocaleString('pl-PL') })}</p>
+        <p className="mt-1 text-sm text-(--text-muted) sm:text-base">{t('recurring.annually', { amount: formatNumberPl(annualTotal) })}</p>
       </Card>
 
       <Card title={t('recurring.title')} className="max-md:p-4">
@@ -227,11 +227,11 @@ export function Recurring() {
                           <>
                             −{formatCurrencyAmount(s.originalAmount, s.currency)}{' '}
                             <span className="text-sm font-sans font-normal text-(--text-muted)">
-                              {t('recurring.convertedBadge', { amount: s.amount.toLocaleString('pl-PL') })}
+                              {t('recurring.convertedBadge', { amount: formatNumberPl(s.amount) })}
                             </span>
                           </>
                         ) : (
-                          <>−{s.amount.toLocaleString('pl-PL')} zł</>
+                          <>−{formatPln(s.amount)}</>
                         )}{' '}
                         <span className="text-sm font-sans font-normal text-(--text-muted)">{t('recurring.perMonth')}</span>
                       </p>

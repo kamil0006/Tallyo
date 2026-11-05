@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
 import { ModalShell } from './ModalShell'
 import type { NetWorthPositionKey } from '../context/DemoDataContext'
+import { formatPln } from '../lib/currency'
 
 interface NetWorthAdjustModalProps {
   isOpen: boolean
@@ -135,7 +136,7 @@ export function NetWorthAdjustModal({ isOpen, onClose, onSubmit, initialPosition
                 <div className="rounded-lg border border-(--border) bg-(--bg-dark)/50 px-3 py-2">
                   <p className="text-sm text-(--text-muted) font-display">{t('netWorthAdjustModal.previewLabel')}</p>
                   <p className="text-base font-mono text-(--text-primary) mt-0.5">
-                    {currentValue.toLocaleString('pl-PL')} zł → <span className={isAdd ? 'text-(--positive)' : 'text-[#e74c3c]'}>{newValue.toLocaleString('pl-PL')} zł</span>
+                    {formatPln(currentValue)} → <span className={isAdd ? 'text-(--positive)' : 'text-[#e74c3c]'}>{formatPln(newValue)}</span>
                   </p>
                 </div>
               )

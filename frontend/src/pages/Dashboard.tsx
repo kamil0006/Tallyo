@@ -36,6 +36,7 @@ import { DashboardQuickStats } from '../components/dashboard/DashboardQuickStats
 import { DashboardQuickLinks } from '../components/dashboard/DashboardQuickLinks'
 import { AiWeeklyReport } from '../components/dashboard/AiWeeklyReport'
 import { useIsMobile } from '../hooks/useIsMobile'
+import { formatPln, formatPlnCompact, formatNumberPl, formatNumberCompactPl } from '../lib/currency'
 
 function DonutTooltip(props: { active?: boolean; payload?: readonly unknown[]; total: number }) {
   const { active, payload, total } = props
@@ -57,7 +58,7 @@ function DonutTooltip(props: { active?: boolean; payload?: readonly unknown[]; t
     >
       <p className="font-medium text-base">{item?.name ?? ''}</p>
       <p className="text-sm text-(--accent)">
-        {(item?.value ?? kwota ?? 0).toLocaleString('pl-PL')} zł ({pct}%)
+        {formatPln((item?.value ?? kwota ?? 0))} ({pct}%)
       </p>
     </motion.div>
   )
@@ -66,6 +67,21 @@ function DonutTooltip(props: { active?: boolean; payload?: readonly unknown[]; t
 const now = new Date()
 const currentYear = now.getFullYear()
 const currentMonth = now.getMonth()
+
+
+/** KPI tile amount: font scales with the tile width, so big sums never overflow
+ *  or break mid-number. Phones show whole złoty to keep it readable. */
+function KpiAmount({ value, sign = false }: { value: number; sign?: boolean }) {
+  const prefix = sign && Math.round(value * 100) > 0 ? '+' : ''
+  const short = Math.abs(value) >= 1_000_000 ? formatNumberCompactPl(value) : formatNumberPl(Math.round(value))
+  return (
+    <span className="block tabular-nums">
+      <span className="whitespace-nowrap text-[clamp(0.8rem,18cqi,1rem)] sm:hidden">{prefix}{short}</span>
+      <span className="hidden whitespace-nowrap text-[clamp(0.75rem,15cqi,1.5rem)] sm:inline">{prefix}{formatNumberPl(value)}</span>{' '}
+      <span className="whitespace-nowrap text-xs sm:text-base">zł</span>
+    </span>
+  )
+}
 
 export function Dashboard() {
   const { t, i18n } = useTranslation('dashboard')
@@ -191,8 +207,8 @@ export function Dashboard() {
           >
             <p className="truncate text-sm text-(--text-muted) font-display">{t('income')}</p>
             <p className="truncate text-sm text-(--text-muted) font-display">{kpiPeriodLabel}</p>
-            <p className="text-base sm:text-2xl font-bold text-(--positive) mt-1 font-display break-all leading-tight">
-              {chartFilteredData.incomeTotal.toLocaleString('pl-PL')} <span className="text-xs sm:text-base">zł</span>
+            <p className="@container mt-1 font-bold font-display leading-tight text-(--positive)">
+              <KpiAmount value={chartFilteredData.incomeTotal} />
             </p>
           </Card>
         </motion.div>
@@ -203,8 +219,8 @@ export function Dashboard() {
           >
             <p className="truncate text-sm text-(--text-muted) font-display">{t('expenses')}</p>
             <p className="truncate text-sm text-(--text-muted) font-display">{kpiPeriodLabel}</p>
-            <p className="text-base sm:text-2xl font-bold text-(--tx-expense) mt-1 font-display break-all leading-tight">
-              {chartFilteredData.expensesTotal.toLocaleString('pl-PL')} <span className="text-xs sm:text-base">zł</span>
+            <p className="@container mt-1 font-bold font-display leading-tight text-(--tx-expense)">
+              <KpiAmount value={chartFilteredData.expensesTotal} />
             </p>
           </Card>
         </motion.div>
@@ -220,14 +236,13 @@ export function Dashboard() {
             <p className="truncate text-sm text-(--text-muted) font-display">{t('balance')}</p>
             <p className="truncate text-sm text-(--text-muted) font-display">{kpiPeriodLabel}</p>
             <p
-              className={`text-base sm:text-2xl font-bold mt-1 font-display break-all leading-tight ${
+              className={`@container mt-1 font-bold font-display leading-tight ${
                 chartFilteredData.balance >= 0
                   ? 'text-(--accent)'
                   : 'text-[#e74c3c]'
               }`}
             >
-              {chartFilteredData.balance >= 0 ? '+' : ''}
-              {chartFilteredData.balance.toLocaleString('pl-PL')} <span className="text-xs sm:text-base">zł</span>
+              <KpiAmount value={chartFilteredData.balance} sign />
             </p>
           </Card>
         </motion.div>
@@ -262,7 +277,7 @@ export function Dashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis dataKey="label" stroke="var(--text-muted)" tick={{ fontSize: isMobile ? 10 : 12 }} />
                 {!isMobile && (
-                  <YAxis stroke="var(--text-muted)" tickFormatter={(v) => `${v} zł`} />
+                  <YAxis stroke="var(--text-muted)" width={76} tickFormatter={(v: number) => formatPlnCompact(v)} />
                 )}
                 <Tooltip
                   cursor={false}
@@ -271,7 +286,7 @@ export function Dashboard() {
                     border: '1px solid var(--border)',
                     borderRadius: '8px',
                   }}
-                  formatter={(value: number | undefined) => [value != null ? `${value} zł` : '', '']}
+                  formatter={(value: number | undefined) => [value != null ? formatPln(value) : '', '']}
                 />
                 <Legend
                   verticalAlign="bottom"
@@ -365,7 +380,7 @@ export function Dashboard() {
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="text-center w-20 sm:w-24">
                     <p className="text-sm sm:text-lg font-bold text-(--accent) font-display leading-tight">
-                      {chartFilteredData.expensesTotal.toLocaleString('pl-PL')} zł
+                      {formatPln(chartFilteredData.expensesTotal)}
                     </p>
                     <p className="text-xs text-(--text-muted) font-display mt-0.5">{t('total')}</p>
                   </div>

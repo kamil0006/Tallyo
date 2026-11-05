@@ -25,7 +25,7 @@ import { ConfirmDialog } from '../../components/ConfirmDialog'
 import { PaymentMethodBadge } from '../../components/finance/PaymentMethodPicker'
 import { useUndoDelete } from '../../components/learning/UndoToast'
 import type { PaymentMethod } from '../../lib/paymentMethod'
-import { formatCurrencyAmount, type Currency } from '../../lib/currency'
+import { formatCurrencyAmount, type Currency, formatPln } from '../../lib/currency'
 
 type SortBy = 'date_desc' | 'date_asc' | 'amount_desc' | 'amount_asc'
 
@@ -448,8 +448,8 @@ export function Transactions() {
                     key={`${tx.type}-${tx.id}`}
                     className="border-b border-(--border)/50 hover:bg-(--bg-dark)/50"
                   >
-                    <td className="py-3 text-base font-mono text-(--text-primary)">{tx.date}</td>
-                    <td className="py-3 text-base font-medium text-(--text-primary)">{capitalizeFirstPl(tx.name)}</td>
+                    <td className="py-3 pr-4 text-base font-mono whitespace-nowrap text-(--text-primary)">{tx.date}</td>
+                    <td className="py-3 pr-4 text-base font-medium text-(--text-primary)">{capitalizeFirstPl(tx.name)}</td>
                     <td className="py-3">
                       {showCategoryPill ? (
                         <span
@@ -467,12 +467,12 @@ export function Transactions() {
                       <PaymentMethodBadge method={tx.paymentMethod} />
                     </td>
                     <td
-                      className={`py-3 text-right text-base font-medium font-mono ${
+                      className={`py-3 pl-4 text-right text-base font-medium font-mono whitespace-nowrap ${
                         tx.amount >= 0 ? 'text-(--tx-income)' : 'text-(--tx-expense)'
                       }`}
                     >
                       {tx.amount >= 0 ? '+' : ''}
-                      {tx.amount.toLocaleString('pl-PL')} zł
+                      {formatPln(tx.amount)}
                       {tx.currency && tx.currency !== 'PLN' && tx.originalAmount != null && (
                         <span className="ml-1.5 text-sm font-sans font-normal text-(--text-muted)">
                           ({formatCurrencyAmount(tx.originalAmount, tx.currency as Currency)})
@@ -536,7 +536,7 @@ export function Transactions() {
                       }`}
                     >
                       {tx.amount >= 0 ? '+' : ''}
-                      {tx.amount.toLocaleString('pl-PL')} zł
+                      {formatPln(tx.amount)}
                     </p>
                     {tx.currency && tx.currency !== 'PLN' && tx.originalAmount != null && (
                       <p className="text-sm text-(--text-muted)">

@@ -14,6 +14,7 @@ import {
   NW_ASSET_ACCENT_OPTIONS,
   normalizeNwAssetAccentKey,
 } from '../lib/netWorthAssetAccent'
+import { formatNumberPl } from '../lib/currency'
 
 export type NetWorthCorrectionAccountRef = {
   id: string
@@ -125,7 +126,7 @@ export function NetWorthCorrectionModal({
               <p className="text-base text-(--text-muted) mb-4">
                 {t('netWorthCorrectionModal.currentBalanceLine', {
                   kind: account.kind === 'asset' ? t('netWorthCorrectionModal.kindAsset') : t('netWorthCorrectionModal.kindLiability'),
-                  balance: currentBalance.toLocaleString('pl-PL'),
+                  balance: formatNumberPl(currentBalance),
                 })}
               </p>
 
@@ -206,7 +207,7 @@ export function NetWorthCorrectionModal({
                   <div className="rounded-lg border border-(--border) bg-(--bg-dark)/50 px-3 py-2">
                     <p className="text-base text-(--text-muted) font-display">{t('netWorthCorrectionModal.afterCorrectionLabel')}</p>
                     <p className="text-base font-mono text-(--text-primary) mt-0.5">
-                      {t('netWorth.balanceArrow', { from: currentBalance.toLocaleString('pl-PL'), to: preview.toLocaleString('pl-PL') })}
+                      {t('netWorth.balanceArrow', { from: formatNumberPl(currentBalance), to: formatNumberPl(preview) })}
                     </p>
                   </div>
                 )}

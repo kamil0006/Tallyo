@@ -30,6 +30,7 @@ import { useFinanceCategories } from '../../context/FinanceCategoriesContext'
 import { useFinanceListsQuery } from '../../hooks/useFinanceListsQuery'
 import { useFinanceUsesApi } from '../../hooks/useFinanceUsesApi'
 import { AnalyticsPageSkeleton } from '../../components/skeletons'
+import { formatPln, formatPlnCompact, formatNumberPl } from '../../lib/currency'
 
 function AnalyticsInsightTile({
   icon: Icon,
@@ -81,7 +82,7 @@ function DonutTooltip(props: { active?: boolean; payload?: readonly unknown[]; t
     >
       <p className="font-medium text-base">{item?.name ?? ''}</p>
       <p className="text-sm text-(--accent)">
-        {(item?.value ?? kwota ?? 0).toLocaleString('pl-PL')} zł ({pct}%)
+        {formatPln((item?.value ?? kwota ?? 0))} ({pct}%)
       </p>
     </div>
   )
@@ -409,7 +410,7 @@ export function Analytics() {
     if (foodNow === 0 && foodPrev === 0) {
       foodLine = t('analytics.foodNoData')
     } else if (foodPrev <= 0 && foodNow > 0) {
-      foodLine = t('analytics.foodThisMonthOnly', { amount: foodNow.toLocaleString('pl-PL') })
+      foodLine = t('analytics.foodThisMonthOnly', { amount: formatNumberPl(foodNow) })
     } else if (foodPrev > 0) {
       const absPct = Math.abs(foodChangePct)
       if (absPct < 0.5) {
@@ -424,14 +425,14 @@ export function Analytics() {
     }
 
     const biggestLine = biggestExpense
-      ? t('analytics.biggestLine', { name: biggestExpense.name, amount: biggestExpense.amount.toLocaleString('pl-PL') })
+      ? t('analytics.biggestLine', { name: biggestExpense.name, amount: formatNumberPl(biggestExpense.amount) })
       : t('analytics.biggestLineEmpty')
 
     const weekdayLine =
       topWeekday && topWeekday.kwota > 0
         ? t('analytics.weekdayLine', {
             weekday: weekdayNarrative[topWeekday.idx] ?? topWeekday.dzień,
-            amount: topWeekday.kwota.toLocaleString('pl-PL'),
+            amount: formatNumberPl(topWeekday.kwota),
           })
         : t('analytics.weekdayLineEmpty')
 
@@ -439,9 +440,9 @@ export function Analytics() {
       totalIncome <= 0
         ? t('analytics.fixedLineNoIncome')
         : t('analytics.fixedLine', {
-            fixed: fixedCosts.toLocaleString('pl-PL'),
+            fixed: formatNumberPl(fixedCosts),
             pct: fixedShare.toFixed(0),
-            income: totalIncome.toLocaleString('pl-PL'),
+            income: formatNumberPl(totalIncome),
           })
 
     return {
@@ -515,28 +516,28 @@ export function Analytics() {
               <AnalyticsInsightTile
                 icon={CreditCard}
                 eyebrow={t('analytics.expensesEyebrow', { method: t('transactions.card').toLowerCase() })}
-                body={`${paymentBreakdown.expenseCard.toLocaleString('pl-PL')} zł`}
+                body={`${formatPln(paymentBreakdown.expenseCard)}`}
                 accentBorder="border-l-(--tx-expense)/60"
                 iconClass="text-(--tx-expense)"
               />
               <AnalyticsInsightTile
                 icon={Wallet}
                 eyebrow={t('analytics.expensesEyebrow', { method: t('transactions.cash').toLowerCase() })}
-                body={`${paymentBreakdown.expenseCash.toLocaleString('pl-PL')} zł`}
+                body={`${formatPln(paymentBreakdown.expenseCash)}`}
                 accentBorder="border-l-(--tx-expense)/40"
                 iconClass="text-(--tx-expense)"
               />
               <AnalyticsInsightTile
                 icon={CreditCard}
                 eyebrow={t('analytics.incomeEyebrow', { method: t('transactions.card').toLowerCase() })}
-                body={`${paymentBreakdown.incomeCard.toLocaleString('pl-PL')} zł`}
+                body={`${formatPln(paymentBreakdown.incomeCard)}`}
                 accentBorder="border-l-(--positive)/55"
                 iconClass="text-(--positive)"
               />
               <AnalyticsInsightTile
                 icon={Wallet}
                 eyebrow={t('analytics.incomeEyebrow', { method: t('transactions.cash').toLowerCase() })}
-                body={`${paymentBreakdown.incomeCash.toLocaleString('pl-PL')} zł`}
+                body={`${formatPln(paymentBreakdown.incomeCash)}`}
                 accentBorder="border-l-(--positive)/35"
                 iconClass="text-(--positive)"
               />
@@ -560,7 +561,7 @@ export function Analytics() {
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis dataKey="label" stroke="var(--text-muted)" tick={{ fontSize: isMobile ? 11 : 12 }} />
-                {!isMobile && <YAxis stroke="var(--text-muted)" tickFormatter={(v) => `${v} zł`} />}
+                {!isMobile && <YAxis stroke="var(--text-muted)" width={76} tickFormatter={(v: number) => formatPlnCompact(v)} />}
                 <Tooltip
                   cursor={false}
                   contentStyle={{
@@ -568,7 +569,7 @@ export function Analytics() {
                     border: '1px solid var(--border)',
                     borderRadius: '8px',
                   }}
-                  formatter={(value: number | undefined) => [value != null ? `${value} zł` : '', '']}
+                  formatter={(value: number | undefined) => [value != null ? formatPln(value) : '', '']}
                 />
                 {!isMobile && <Legend />}
                 <Area type="monotone" dataKey="wydatki" stroke="#c98a9b" strokeWidth={2} fillOpacity={1} fill="url(#colorWydatki)" name={t('overview.expenses')} activeDot={false} />
@@ -624,7 +625,7 @@ export function Analytics() {
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                   <div className="w-24 text-center">
                     <p className="text-base font-bold leading-tight text-(--accent) font-display sm:text-lg">
-                      {expensesTotal.toLocaleString('pl-PL')} zł
+                      {formatPln(expensesTotal)}
                     </p>
                     <p className="mt-0.5 text-xs text-(--text-muted)">{t('analytics.totalShort')}</p>
                   </div>
@@ -654,7 +655,7 @@ export function Analytics() {
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis dataKey="label" stroke="var(--text-muted)" tick={{ fontSize: isMobile ? 11 : 12 }} />
-                {!isMobile && <YAxis stroke="var(--text-muted)" tickFormatter={(v) => `${v} zł`} />}
+                {!isMobile && <YAxis stroke="var(--text-muted)" width={76} tickFormatter={(v: number) => formatPlnCompact(v)} />}
                 <ReferenceLine y={0} stroke="var(--border)" strokeDasharray="3 3" />
                 <Tooltip
                   cursor={false}
@@ -672,9 +673,9 @@ export function Analytics() {
                     const okresowy = payload?.bilans
                     const suffix =
                       okresowy != null
-                        ? t('analytics.inPeriod', { amount: `${okresowy >= 0 ? '+' : ''}${okresowy.toLocaleString('pl-PL')}` })
+                        ? t('analytics.inPeriod', { amount: `${okresowy >= 0 ? '+' : ''}${formatNumberPl(okresowy)}` })
                         : ''
-                    return [value != null ? `${value.toLocaleString('pl-PL')} zł${suffix}` : '', t('analytics.cumulativeBalance')]
+                    return [value != null ? `${formatPln(value)}${suffix}` : '', t('analytics.cumulativeBalance')]
                   }}
                 />
                 <Area
@@ -702,7 +703,7 @@ export function Analytics() {
               <BarChart data={weekdayData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis dataKey="dzień" stroke="var(--text-muted)" />
-                {!isMobile && <YAxis stroke="var(--text-muted)" tickFormatter={(v) => `${v} zł`} />}
+                {!isMobile && <YAxis stroke="var(--text-muted)" width={76} tickFormatter={(v: number) => formatPlnCompact(v)} />}
                 <Tooltip
                   cursor={false}
                   contentStyle={{
@@ -710,7 +711,7 @@ export function Analytics() {
                     border: '1px solid var(--border)',
                     borderRadius: '8px',
                   }}
-                  formatter={(value: number | undefined) => [value != null ? `${value} zł` : '', t('overview.expenses')]}
+                  formatter={(value: number | undefined) => [value != null ? formatPln(value) : '', t('overview.expenses')]}
                 />
                 <Bar dataKey="kwota" fill="#c98a9b" fillOpacity={0.8} radius={[4, 4, 0, 0]} name={t('overview.expenses')} activeBar={false} />
               </BarChart>
@@ -733,7 +734,7 @@ export function Analytics() {
                   >
                     <span className="min-w-0 truncate text-sm text-(--text-primary)">{row.fullName ?? row.nazwa}</span>
                     <span className="shrink-0 text-sm font-semibold tabular-nums text-(--tx-expense)">
-                      {row.kwota.toLocaleString('pl-PL')} zł
+                      {formatPln(row.kwota)}
                     </span>
                   </li>
                 ))}
@@ -743,7 +744,7 @@ export function Analytics() {
               <ResponsiveContainer width="100%" height={chartHeight}>
                 <BarChart data={topExpenses} layout="vertical" margin={{ left: 0, right: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
-                  <XAxis type="number" stroke="var(--text-muted)" tickFormatter={(v) => `${v} zł`} />
+                  <XAxis type="number" stroke="var(--text-muted)" tickFormatter={(v: number) => formatPlnCompact(v)} />
                   <YAxis type="category" dataKey="nazwa" stroke="var(--text-muted)" width={90} tick={{ fontSize: 11 }} />
                   <Tooltip
                     cursor={false}
@@ -753,7 +754,7 @@ export function Analytics() {
                       borderRadius: '8px',
                     }}
                     formatter={(value: number | undefined, _name?: string, props?: { payload?: { fullName: string } }) => [
-                      value != null ? `${value} zł` : '',
+                      value != null ? formatPln(value) : '',
                       props?.payload?.fullName ?? '',
                     ]}
                     labelFormatter={() => ''}
