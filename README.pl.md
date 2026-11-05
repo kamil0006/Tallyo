@@ -105,7 +105,7 @@ Copy-Item backend/.env.example backend/.env
 | Plik | Kluczowe zmienne |
 |------|------------------|
 | `frontend/.env` | `VITE_DEMO_MODE`, `VITE_API_PORT` (= `PORT` backendu) |
-| `backend/.env` | `DATABASE_URL`, `JWT_SECRET`, `PORT`, `FRONTEND_URL`, opcjonalnie `ENCRYPTION_*`, `AI_*`, `REGISTRATION_ENABLED` |
+| `backend/.env` | `DATABASE_URL`, `JWT_SECRET`, `PORT`, `FRONTEND_URL`, opcjonalnie `ENCRYPTION_*`, `AI_*`, `REGISTRATION_ENABLED`, `MAX_USERS` |
 
 Pełna lista w `backend/.env.example`. **Nie commituj** uzupełnionych `.env`.
 
@@ -145,7 +145,7 @@ npm run dev
 - **Frontend:** http://localhost:5173  
 - **API:** http://localhost:3002 (domyślnie; w dev Vite proxy `/api`)
 
-Pierwsze konto przez rejestrację. Przy jednym użytkowniku ustaw potem `REGISTRATION_ENABLED=false`.
+Pierwsze konto przez rejestrację. Przy jednym użytkowniku ustaw potem `REGISTRATION_ENABLED=false`. Dla kilku osób możesz zamiast tego ustawić `REGISTRATION_ENABLED=true` i `MAX_USERS=2` — rejestracja zamknie się sama po założeniu 2 kont.
 
 ### Port zajęty?
 
