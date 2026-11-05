@@ -28,8 +28,8 @@ export function MobileHeader({ onMenuClick }: MobileHeaderProps) {
         to="/dashboard"
         className="min-w-0 font-display text-lg font-bold tracking-widest outline-none focus:outline-none"
       >
-        <span className="text-(--accent)">Life</span>
-        <span className="text-(--text-primary)">OS</span>
+        <span className="text-(--accent)">Tally</span>
+        <span className="text-(--text-primary)">o</span>
       </Link>
       <button
         type="button"

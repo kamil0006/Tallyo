@@ -46,8 +46,8 @@ export function ResetPassword() {
         className="w-full max-w-md"
       >
         <h1 className="text-4xl font-bold font-display tracking-widest text-center mb-8">
-          <span className="text-(--accent)">Life</span>
-          <span className="text-(--text-primary)">OS</span>
+          <span className="text-(--accent)">Tally</span>
+          <span className="text-(--text-primary)">o</span>
         </h1>
         <div className="rounded-lg border border-(--border) bg-(--bg-card) p-6 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-(--accent)/50 to-transparent" />

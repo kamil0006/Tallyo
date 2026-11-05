@@ -100,9 +100,9 @@ export function Login() {
               animate={{ opacity: [0.9, 1, 0.9] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             >
-              Life
+              Tally
             </motion.span>
-            <span className="text-(--text-primary)">OS</span>
+            <span className="text-(--text-primary)">o</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
