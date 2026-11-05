@@ -11,6 +11,7 @@ Przewodnik bezpieczeństwa dla wersji **prywatnej (production)** i **publicznej 
 | Dane | Demo / seed | Prawdziwe dane użytkownika |
 | `ENCRYPTION_ENABLED` | `false` | **`true`** |
 | `REGISTRATION_ENABLED` | `true` (opcjonalnie) | **`false`** |
+| `MAX_USERS` | puste (bez limitu) | np. `2` — alternatywa: `REGISTRATION_ENABLED=true` + limit kont |
 | OpenAI | **`false`** | Tylko świadomy opt-in |
 | JWT / sesja | Silny secret w `.env` | Silny secret + httpOnly cookies |
 

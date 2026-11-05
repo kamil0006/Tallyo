@@ -89,6 +89,21 @@ describe('isRegistrationEnabled', () => {
   })
 })
 
+describe('getMaxUsers', () => {
+  it('returns null (no limit) when unset or invalid', async () => {
+    for (const v of [undefined, '', 'abc', '0', '-2', '2.5']) {
+      if (v === undefined) delete process.env.MAX_USERS
+      else process.env.MAX_USERS = v
+      expect((await loadConfig()).getMaxUsers()).toBeNull()
+    }
+  })
+
+  it('parses a positive integer', async () => {
+    process.env.MAX_USERS = ' 2 '
+    expect((await loadConfig()).getMaxUsers()).toBe(2)
+  })
+})
+
 describe('isEncryptionEnabled / getEncryptionKey', () => {
   it('returns null when encryption is disabled', async () => {
     delete process.env.ENCRYPTION_ENABLED

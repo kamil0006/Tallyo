@@ -105,7 +105,7 @@ Copy-Item backend/.env.example backend/.env
 | File | Key variables |
 |------|----------------|
 | `frontend/.env` | `VITE_DEMO_MODE`, `VITE_API_PORT` (must match backend `PORT`) |
-| `backend/.env` | `DATABASE_URL`, `JWT_SECRET`, `PORT`, `FRONTEND_URL`, optional `ENCRYPTION_*`, `AI_*`, `REGISTRATION_ENABLED` |
+| `backend/.env` | `DATABASE_URL`, `JWT_SECRET`, `PORT`, `FRONTEND_URL`, optional `ENCRYPTION_*`, `AI_*`, `REGISTRATION_ENABLED`, `MAX_USERS` |
 
 See `backend/.env.example` for the full list. **Never commit** filled-in `.env` files.
 
@@ -145,7 +145,7 @@ npm run dev
 - **Frontend:** http://localhost:5173  
 - **API:** http://localhost:3002 (default; Vite proxies `/api` in dev)
 
-Register the first account in the app. For a single-user private setup, set `REGISTRATION_ENABLED=false` after that.
+Register the first account in the app. For a single-user private setup, set `REGISTRATION_ENABLED=false` after that. For a few people, set `REGISTRATION_ENABLED=true` and `MAX_USERS=2` instead — registration closes on its own once 2 accounts exist.
 
 ### Busy ports?
 

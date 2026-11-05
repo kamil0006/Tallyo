@@ -11,6 +11,7 @@ Security guide for the **private (production)** and **public (showcase/demo)** v
 | Data | Demo / seed | Real user data |
 | `ENCRYPTION_ENABLED` | `false` | **`true`** |
 | `REGISTRATION_ENABLED` | `true` (optional) | **`false`** |
+| `MAX_USERS` | empty (no limit) | e.g. `2` — alternative: `REGISTRATION_ENABLED=true` + an account cap |
 | OpenAI | **`false`** | Opt-in only |
 | JWT / session | Strong secret in `.env` | Strong secret + httpOnly cookies |
 

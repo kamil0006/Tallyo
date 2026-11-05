@@ -26,6 +26,14 @@ export function isRegistrationEnabled(): boolean {
   return !isProduction
 }
 
+/** Max number of accounts (MAX_USERS). Unset/invalid = no limit. */
+export function getMaxUsers(): number | null {
+  const raw = process.env.MAX_USERS?.trim()
+  if (!raw || !/^\d+$/.test(raw)) return null
+  const n = Number(raw)
+  return n > 0 ? n : null
+}
+
 export function isEncryptionEnabled(): boolean {
   return process.env.ENCRYPTION_ENABLED === 'true'
 }

@@ -7,6 +7,7 @@ import { prisma } from '../lib/prisma.js'
 import { AuthPayload } from '../middleware/auth.js'
 import {
   getJwtSecret,
+  getMaxUsers,
   isProduction,
   isRegistrationEnabled,
 } from '../lib/config.js'
@@ -58,6 +59,10 @@ export const authRouter = Router()
 authRouter.post('/register', async (req, res) => {
   if (!isRegistrationEnabled()) {
     return res.status(403).json({ error: 'Rejestracja jest wyłączona' })
+  }
+  const maxUsers = getMaxUsers()
+  if (maxUsers !== null && (await prisma.user.count()) >= maxUsers) {
+    return res.status(403).json({ error: 'Osiągnięto limit kont — rejestracja jest zamknięta' })
   }
   try {
     const raw = registerSchema.parse(req.body)
