@@ -13,7 +13,7 @@ export function errorHandler(err: unknown, _req: Request, res: Response, _next: 
   }
 
   if (err instanceof ZodError) {
-    const first = err.errors[0]
+    const first = err.issues[0]
     const field = first?.path.join('.') || 'dane'
     return res.status(400).json({
       error: isProduction ? 'Nieprawidłowe dane wejściowe' : `Walidacja (${field}): ${first?.message ?? 'błąd'}`,

@@ -75,7 +75,7 @@ authRouter.post('/register', async (req, res) => {
     res.status(201).json(issueSession(res, user, rememberMe))
   } catch (e) {
     if (e instanceof z.ZodError) {
-      const first = e.errors[0]
+      const first = e.issues[0]
       const msg = first?.path[0] === 'email'
         ? 'Nieprawidłowy format adresu email'
         : first?.message ?? 'Nieprawidłowe dane'
@@ -204,7 +204,7 @@ authRouter.post('/reset-password', async (req, res) => {
     res.json({ ok: true, message: 'Hasło zaktualizowane. Możesz się zalogować.' })
   } catch (e) {
     if (e instanceof z.ZodError) {
-      const first = e.errors[0]
+      const first = e.issues[0]
       return res.status(400).json({ error: first?.message ?? 'Nieprawidłowe dane' })
     }
     console.error('Reset-password error:', e)
