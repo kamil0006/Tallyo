@@ -28,7 +28,7 @@ import notesEn from './locales/en/notes.json'
 import learningEn from './locales/en/learning.json'
 import onboardingEn from './locales/en/onboarding.json'
 
-export const LANGUAGE_STORAGE_KEY = 'lifeos_language'
+export const LANGUAGE_STORAGE_KEY = 'tallyo_language'
 
 export const i18nNamespaces = [
   'common',

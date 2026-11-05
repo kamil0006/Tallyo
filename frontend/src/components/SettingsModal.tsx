@@ -65,7 +65,7 @@ export function SettingsModal() {
     try {
       const backup = await backupApi.export()
       const date = new Date().toISOString().slice(0, 10)
-      downloadJson(backup, `lifeos-backup-${date}.json`)
+      downloadJson(backup, `tallyo-backup-${date}.json`)
       setSuccessMsg(t('exportSuccess'))
       await queryClient.invalidateQueries({ queryKey: queryKeys.backupStatus(userId) })
     } catch (e) {

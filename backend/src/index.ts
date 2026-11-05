@@ -72,7 +72,7 @@ app.use('/api/backup', authMiddleware, backupRouter)
 app.use(errorHandler)
 
 const server = app.listen(PORT, async () => {
-  console.log(`LifeOS API running on http://localhost:${PORT} (${isProduction ? 'production' : 'development'})`)
+  console.log(`Tallyo API running on http://localhost:${PORT} (${isProduction ? 'production' : 'development'})`)
   try {
     await prisma.$connect()
     console.log('Połączenie z bazą danych OK')

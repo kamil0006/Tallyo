@@ -1,5 +1,5 @@
 {
-  "name": "lifeos-backend",
+  "name": "tallyo-backend",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -24,7 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "openai": "^6.42.0",
     "prisma": "^6.0.0",
-    "zod": "^3.23.8"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

@@ -17,8 +17,8 @@ export interface FinanceCategory {
   color: string
 }
 
-const DEMO_STORAGE_KEY = 'lifeos_demo_categories'
-const HIDDEN_BUILTIN_STORAGE_PREFIX = 'lifeos_fin_hidden_builtin:'
+const DEMO_STORAGE_KEY = 'tallyo_demo_categories'
+const HIDDEN_BUILTIN_STORAGE_PREFIX = 'tallyo_fin_hidden_builtin:'
 
 /** Names of the default expense categories (same as seed) — filtered out of `loaded` during merge. */
 const DEFAULT_EXPENSE_NAMES_LOWER = new Set(

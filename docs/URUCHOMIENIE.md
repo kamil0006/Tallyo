@@ -1,6 +1,6 @@
 [English](URUCHOMIENIE.en.md) · **Polski**
 
-# LifeOS – Jak uruchomić
+# Tallyo – Jak uruchomić
 
 ## Dwa tryby pracy
 
@@ -55,14 +55,14 @@ Do używania aplikacji z własnymi danymi zapisywanymi w bazie.
 W pliku `backend/.env`:
 
 ```
-DATABASE_URL="postgresql://UŻYTKOWNIK:HASŁO@localhost:5432/lifeos"
+DATABASE_URL="postgresql://UŻYTKOWNIK:HASŁO@localhost:5432/tallyo"
 JWT_SECRET="twoj-tajny-klucz"
 PORT=3001
 FRONTEND_URL="http://localhost:5173"
 ```
 
 - Zamień `UŻYTKOWNIK` i `HASŁO` na dane do PostgreSQL
-- Utwórz bazę: `psql -U postgres -c "CREATE DATABASE lifeos;"`
+- Utwórz bazę: `psql -U postgres -c "CREATE DATABASE tallyo;"`
 
 ### 3. Migracje bazy
 
@@ -91,7 +91,7 @@ cd backend
 npm run dev
 ```
 
-Powinno pojawić się: `LifeOS API running on http://localhost:3002` i potwierdzenie połączenia z bazą.
+Powinno pojawić się: `Tallyo API running on http://localhost:3002` i potwierdzenie połączenia z bazą.
 
 **Terminal 2 – frontend:**
 ```bash

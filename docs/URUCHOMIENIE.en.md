@@ -1,6 +1,6 @@
 **English** · [Polski](URUCHOMIENIE.md)
 
-# LifeOS — Getting started
+# Tallyo — Getting started
 
 ## Two modes
 
@@ -55,14 +55,14 @@ For using the app with data stored in PostgreSQL.
 In `backend/.env`:
 
 ```
-DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/lifeos"
+DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/tallyo"
 JWT_SECRET="your-secret-key"
 PORT=3002
 FRONTEND_URL="http://localhost:5173"
 ```
 
 - Replace `USER` and `PASSWORD` with your PostgreSQL credentials  
-- Create the database: `psql -U postgres -c "CREATE DATABASE lifeos;"`  
+- Create the database: `psql -U postgres -c "CREATE DATABASE tallyo;"`  
 
 ### 3. Run migrations
 
@@ -92,7 +92,7 @@ cd backend
 npm run dev
 ```
 
-You should see something like: `LifeOS API running on http://localhost:3002` and a successful DB connection message.
+You should see something like: `Tallyo API running on http://localhost:3002` and a successful DB connection message.
 
 **Terminal 2 — frontend:**
 

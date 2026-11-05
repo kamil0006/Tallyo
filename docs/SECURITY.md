@@ -1,6 +1,6 @@
-**English** · [Polski](https://github.com/kamil0006/LifeOS/blob/main/docs/SECURITY.pl.md)
+**English** · [Polski](https://github.com/kamil0006/Tallyo/blob/main/docs/SECURITY.pl.md)
 
-# LifeOS — Security
+# Tallyo — Security
 
 Security guide for the **private (production)** and **public (showcase/demo)** versions.
 
@@ -45,7 +45,7 @@ AI_USE_OPENAI=false
 ### Authentication
 
 - Passwords: bcrypt cost 12, min. 8 characters, letter + digit
-- JWT in **httpOnly cookies** (`lifeos_session` + `lifeos_refresh`)
+- JWT in **httpOnly cookies** (`tallyo_session` + `tallyo_refresh`)
 - Access token: **1 h**; refresh: **7 days** (remember me) or **24 h** (session)
 - `POST /api/auth/refresh` — automatic session refresh (frontend)
 - Registration and password reset gated by env flags

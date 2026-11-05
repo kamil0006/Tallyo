@@ -1,4 +1,4 @@
-/** Asset list colors — consistent with the LifeOS palette */
+/** Asset list colors — consistent with the Tallyo palette */
 
 export const NW_ASSET_ACCENT_OPTIONS: { key: string; label: string }[] = [
   { key: 'cyan', label: 'Cyjan' },

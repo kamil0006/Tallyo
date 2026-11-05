@@ -10,7 +10,7 @@ jobs:
   audit-and-build:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/lifeos_ci
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tallyo_ci
       JWT_SECRET: ci-jwt-secret-minimum-32-characters-long
       NODE_ENV: test
 

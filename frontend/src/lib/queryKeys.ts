@@ -1,6 +1,6 @@
 /** Keys with a userId segment — no cache mixing between accounts. */
 export const queryKeys = {
-  root: ['lifeos'] as const,
+  root: ['tallyo'] as const,
   expenses: (userId: string) => [...queryKeys.root, 'expenses', userId] as const,
   income: (userId: string) => [...queryKeys.root, 'income', userId] as const,
   scheduledExpenses: (userId: string) => [...queryKeys.root, 'scheduledExpenses', userId] as const,

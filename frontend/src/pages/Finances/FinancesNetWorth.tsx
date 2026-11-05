@@ -36,10 +36,10 @@ import { NetWorthPageSkeleton } from '../../components/skeletons'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { safeRandomId } from '../../lib/safeId'
 
-const DEMO_NW_LIAB_KEY = 'lifeos_demo_nw_liabilities_v1'
-const DEMO_NW_LOG_KEY = 'lifeos_demo_nw_adjustment_log_v1'
-const DEMO_NW_CUSTOM_ASSETS_KEY = 'lifeos_demo_nw_custom_assets_v1'
-const NW_HISTORY_COLLAPSED_KEY = 'lifeos_nw_history_collapsed'
+const DEMO_NW_LIAB_KEY = 'tallyo_demo_nw_liabilities_v1'
+const DEMO_NW_LOG_KEY = 'tallyo_demo_nw_adjustment_log_v1'
+const DEMO_NW_CUSTOM_ASSETS_KEY = 'tallyo_demo_nw_custom_assets_v1'
+const NW_HISTORY_COLLAPSED_KEY = 'tallyo_nw_history_collapsed'
 
 const DEMO_DETAIL_PLACEHOLDER = '—'
 

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 
-export const ONBOARDING_KEY = 'lifeos_onboarding_seen'
+export const ONBOARDING_KEY = 'tallyo_onboarding_seen'
 
 interface OnboardingContextType {
   isOpen: boolean

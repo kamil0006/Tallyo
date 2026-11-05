@@ -170,10 +170,10 @@ export const DEMO_NET_WORTH: DemoNetWorth = { cash: 800, bankAccount: 4200, asse
 
 export { DEMO_EXPENSES, DEMO_INCOME, DEMO_SCHEDULED_EXPENSES }
 
-const NET_WORTH_STORAGE_KEY = 'lifeos_net_worth'
-const DEMO_EXPENSES_STORAGE_KEY = 'lifeos_demo_expenses_v1'
-const DEMO_INCOME_STORAGE_KEY = 'lifeos_demo_income_v1'
-const DEMO_SCHEDULED_STORAGE_KEY = 'lifeos_demo_scheduled_expenses_v1'
+const NET_WORTH_STORAGE_KEY = 'tallyo_net_worth'
+const DEMO_EXPENSES_STORAGE_KEY = 'tallyo_demo_expenses_v1'
+const DEMO_INCOME_STORAGE_KEY = 'tallyo_demo_income_v1'
+const DEMO_SCHEDULED_STORAGE_KEY = 'tallyo_demo_scheduled_expenses_v1'
 
 function isDemoExpenseRow(x: unknown): x is DemoExpense {
   if (!x || typeof x !== 'object') return false
