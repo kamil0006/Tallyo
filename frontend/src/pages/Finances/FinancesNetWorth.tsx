@@ -35,6 +35,7 @@ import { queryKeys } from '../../lib/queryKeys'
 import { NetWorthPageSkeleton } from '../../components/skeletons'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { safeRandomId } from '../../lib/safeId'
+import { formatPln, formatPlnCompact, formatNumberPl } from '../../lib/currency'
 
 const DEMO_NW_LIAB_KEY = 'tallyo_demo_nw_liabilities_v1'
 const DEMO_NW_LOG_KEY = 'tallyo_demo_nw_adjustment_log_v1'
@@ -827,7 +828,7 @@ export function FinancesNetWorth() {
                 accountsNetWorth >= 0 ? 'text-(--accent)' : 'text-[#e74c3c]'
               }`}
             >
-              {accountsNetWorth.toLocaleString('pl-PL')} zł
+              {formatPln(accountsNetWorth)}
             </p>
             <p className="mt-1 text-base text-(--text-muted)">{t('netWorth.netWorthFormula')}</p>
           </div>
@@ -835,13 +836,13 @@ export function FinancesNetWorth() {
             <div className="flex justify-between gap-4 border-b border-(--border)/50 pb-2">
               <dt className="text-base text-(--text-muted)">{t('netWorth.assetsLabel')}</dt>
               <dd className="text-base font-display text-(--text-primary) tabular-nums">
-                {assetsTotal.toLocaleString('pl-PL')} zł
+                {formatPln(assetsTotal)}
               </dd>
             </div>
             <div className="flex justify-between gap-4 border-b border-(--border)/50 pb-2">
               <dt className="text-base text-(--text-muted)">{t('netWorth.liabilitiesLabel')}</dt>
               <dd className="text-base font-display tabular-nums text-[#e74c3c]">
-                −{liabilitiesTotal.toLocaleString('pl-PL')} zł
+                {liabilitiesTotal > 0 ? `−${formatPln(liabilitiesTotal)}` : formatPln(0)}
               </dd>
             </div>
             <div className="flex justify-between gap-4 border-b border-(--border)/50 pb-2 sm:col-span-2">
@@ -852,7 +853,7 @@ export function FinancesNetWorth() {
                 }`}
               >
                 {cumulativeSavings >= 0 ? '+' : ''}
-                {cumulativeSavings.toLocaleString('pl-PL')} zł
+                {formatPln(cumulativeSavings)}
               </dd>
             </div>
           </dl>
@@ -865,8 +866,8 @@ export function FinancesNetWorth() {
             </div>
             <p className="text-sm text-(--text-muted) sm:text-base">
               {t('netWorth.ofIncome', {
-                amount: (periodIncomeTotal - periodExpenseTotal).toLocaleString('pl-PL'),
-                income: periodIncomeTotal.toLocaleString('pl-PL'),
+                amount: formatNumberPl((periodIncomeTotal - periodExpenseTotal)),
+                income: formatNumberPl(periodIncomeTotal),
               })}
             </p>
           </div>
@@ -911,7 +912,7 @@ export function FinancesNetWorth() {
                       </div>
                       <div className="flex items-center justify-between gap-2 sm:shrink-0">
                         <span className={`font-mono text-base tabular-nums ${accAccent.amount}`}>
-                          {account.balance.toLocaleString('pl-PL')} zł
+                          {formatPln(account.balance)}
                         </span>
                         <div className="flex shrink-0 items-center gap-1">
                         <button
@@ -959,7 +960,7 @@ export function FinancesNetWorth() {
                     </div>
                     <div className="flex items-center justify-between gap-2 sm:shrink-0">
                       <span className={`font-mono text-base tabular-nums ${balanceClass}`}>
-                        {(netWorthPositions[key] ?? 0).toLocaleString('pl-PL')} zł
+                        {formatPln((netWorthPositions[key] ?? 0))}
                       </span>
                       <button
                         type="button"
@@ -982,7 +983,7 @@ export function FinancesNetWorth() {
                     </div>
                     <div className="flex items-center justify-between gap-2 sm:shrink-0">
                       <span className={`font-mono text-base tabular-nums ${aAccent.amount}`}>
-                        {a.balance.toLocaleString('pl-PL')} zł
+                        {formatPln(a.balance)}
                       </span>
                       <div className="flex shrink-0 items-center gap-1">
                       <button
@@ -1035,7 +1036,7 @@ export function FinancesNetWorth() {
                       </div>
                       <div className="flex items-center justify-between gap-2 sm:shrink-0">
                         <span className="font-mono text-base tabular-nums text-[#e74c3c]">
-                          −{account.balance.toLocaleString('pl-PL')} zł
+                          −{formatPln(account.balance)}
                         </span>
                         <div className="flex shrink-0 items-center gap-1">
                         <button
@@ -1083,7 +1084,7 @@ export function FinancesNetWorth() {
                     </div>
                     <div className="flex items-center justify-between gap-2 sm:shrink-0">
                       <span className="font-mono text-base tabular-nums text-[#e74c3c]">
-                        −{l.balance.toLocaleString('pl-PL')} zł
+                        −{formatPln(l.balance)}
                       </span>
                       <div className="flex shrink-0 items-center gap-1">
                       <button
@@ -1150,7 +1151,7 @@ export function FinancesNetWorth() {
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
               <XAxis dataKey="label" stroke="var(--text-muted)" tick={{ fontSize: isMobile ? 11 : 12 }} />
-              {!isMobile && <YAxis stroke="var(--text-muted)" tickFormatter={(v) => `${v} zł`} />}
+              {!isMobile && <YAxis stroke="var(--text-muted)" width={76} tickFormatter={(v: number) => formatPlnCompact(v)} />}
               <ReferenceLine y={0} stroke="var(--border)" strokeDasharray="3 3" />
               <Tooltip
                 cursor={false}
@@ -1164,9 +1165,9 @@ export function FinancesNetWorth() {
                   const bilans = payload?.bilans
                   const suffix =
                     bilans != null
-                      ? t('netWorth.inPeriod', { amount: `${bilans >= 0 ? '+' : ''}${bilans.toLocaleString('pl-PL')}` })
+                      ? t('netWorth.inPeriod', { amount: `${bilans >= 0 ? '+' : ''}${formatNumberPl(bilans)}` })
                       : ''
-                  return [value != null ? `${value.toLocaleString('pl-PL')} zł${suffix}` : '', t('netWorth.cumulativeBalance')]
+                  return [value != null ? `${formatPln(value)}${suffix}` : '', t('netWorth.cumulativeBalance')]
                 }}
               />
               <Area
@@ -1232,7 +1233,7 @@ export function FinancesNetWorth() {
                       <div className="text-right">
                         <p className={`font-mono text-sm ${row.amount >= 0 ? 'text-(--positive)' : 'text-[#e74c3c]'}`}>
                           {row.amount >= 0 ? '+' : ''}
-                          {row.amount.toLocaleString('pl-PL')} zł
+                          {formatPln(row.amount)}
                         </p>
                         <p className="text-base text-(--text-muted)">
                           {new Date(row.createdAt).toLocaleString(dateLocale)}
@@ -1277,7 +1278,7 @@ export function FinancesNetWorth() {
                       <div className="text-right">
                         <p className={`font-mono text-sm ${row.amount >= 0 ? 'text-(--positive)' : 'text-[#e74c3c]'}`}>
                           {row.amount >= 0 ? '+' : ''}
-                          {row.amount.toLocaleString('pl-PL')} zł
+                          {formatPln(row.amount)}
                         </p>
                         <p className="text-base text-(--text-muted)">{new Date(row.at).toLocaleString(dateLocale)}</p>
                       </div>

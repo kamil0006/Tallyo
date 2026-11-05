@@ -22,6 +22,7 @@ import {
   getOverviewTileVariants,
   overviewPageContainerVariants,
 } from '../../lib/layoutSectionMotion'
+import { formatPln } from '../../lib/currency'
 
 export function Overview() {
   const { t, i18n } = useTranslation('finances')
@@ -176,13 +177,13 @@ export function Overview() {
         <Card className="border-(--positive)/20" animateEntrance={false}>
           <p className="text-base text-(--text-muted)">{t('overview.income')}</p>
           <p className="mt-1 text-2xl font-bold font-display text-(--positive)">
-            {incomeTotal.toLocaleString('pl-PL')} zł
+            {formatPln(incomeTotal)}
           </p>
         </Card>
         <Card className="border-(--tx-expense)/20" animateEntrance={false}>
           <p className="text-base text-(--text-muted)">{t('overview.expenses')}</p>
           <p className="mt-1 text-2xl font-bold font-display text-(--tx-expense)">
-            {expensesTotal.toLocaleString('pl-PL')} zł
+            {formatPln(expensesTotal)}
           </p>
         </Card>
         <Card className={currentTotal >= 0 ? 'border-(--accent)/20' : 'border-[#e74c3c]/30'} animateEntrance={false}>
@@ -192,39 +193,39 @@ export function Overview() {
               currentTotal >= 0 ? 'text-(--accent)' : 'text-[#e74c3c]'
             }`}
           >
-            {currentTotal >= 0 ? '+' : ''}{currentTotal.toLocaleString('pl-PL')} zł
+            {currentTotal >= 0 ? '+' : ''}{formatPln(currentTotal)}
           </p>
         </Card>
       </motion.div>
 
       <motion.div variants={getOverviewTileVariants(reduceMotion, 1)} className="min-w-0">
-        <Card className="border-(--accent)/20 max-md:p-4 md:p-7!" animateEntrance={false}>
+        <Card className="@container border-(--accent)/20 max-md:p-4 md:p-7!" animateEntrance={false}>
           <p className="mb-4 text-base text-(--text-muted) md:mb-6">{t('overview.monthlyTrend')}</p>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
-            <div className="min-w-0 space-y-4 md:border-r md:border-(--border) md:pr-8">
+          <div className="grid grid-cols-1 gap-6 @3xl:grid-cols-3 @3xl:gap-8">
+            <div className="min-w-0 space-y-4 @3xl:border-r @3xl:border-(--border) @3xl:pr-8">
               <p className="text-sm font-semibold text-(--text-primary) font-display">{currMonthName}</p>
               <div>
                 <p className="text-base text-(--text-muted)">{t('overview.balance')}</p>
                 <p
-                  className={`mt-1 text-2xl font-bold font-display sm:text-3xl ${
+                  className={`mt-1 text-2xl font-bold font-display tabular-nums @5xl:text-3xl ${
                     currentTotal >= 0 ? 'text-(--accent)' : 'text-[#e74c3c]'
                   }`}
                 >
                   {currentTotal >= 0 ? '+' : ''}
-                  {currentTotal.toLocaleString('pl-PL')} zł
+                  {formatPln(currentTotal)}
                 </p>
               </div>
               <dl className="space-y-3 border-t border-(--border) pt-4">
                 <div className="flex items-baseline justify-between gap-4">
                   <dt className="text-base text-(--text-muted)">{t('overview.income')}</dt>
                   <dd className="text-right text-lg font-semibold tabular-nums text-(--positive)">
-                    {currentIncomeForTrend.toLocaleString('pl-PL')} zł
+                    {formatPln(currentIncomeForTrend)}
                   </dd>
                 </div>
                 <div className="flex items-baseline justify-between gap-4">
                   <dt className="text-base text-(--text-muted)">{t('overview.expenses')}</dt>
                   <dd className="text-right text-lg font-semibold tabular-nums text-(--tx-expense)">
-                    {currentExpensesForTrend.toLocaleString('pl-PL')} zł
+                    {formatPln(currentExpensesForTrend)}
                   </dd>
                 </div>
               </dl>
@@ -235,33 +236,33 @@ export function Overview() {
                   {changePercent}%
                 </span>{' '}
                 ({balanceDeltaZloty >= 0 ? '+' : ''}
-                {balanceDeltaZloty.toLocaleString('pl-PL')} zł)
+                {formatPln(balanceDeltaZloty)})
               </p>
             </div>
-            <div className="hidden min-w-0 space-y-4 md:block md:border-r md:border-(--border) md:pr-8">
+            <div className="hidden min-w-0 space-y-4 md:block @3xl:border-r @3xl:border-(--border) @3xl:pr-8">
               <p className="text-sm font-semibold text-(--text-primary) font-display">{prevMonthName}</p>
               <div>
                 <p className="text-base text-(--text-muted)">{t('overview.balance')}</p>
                 <p
-                  className={`mt-1 text-2xl font-bold font-display sm:text-3xl ${
+                  className={`mt-1 text-2xl font-bold font-display tabular-nums @5xl:text-3xl ${
                     previousTotal >= 0 ? 'text-(--text-primary)' : 'text-[#e74c3c]'
                   }`}
                 >
                   {previousTotal >= 0 ? '+' : ''}
-                  {previousTotal.toLocaleString('pl-PL')} zł
+                  {formatPln(previousTotal)}
                 </p>
               </div>
               <dl className="space-y-3 border-t border-(--border) pt-4">
                 <div className="flex items-baseline justify-between gap-4">
                   <dt className="text-base text-(--text-muted)">{t('overview.income')}</dt>
                   <dd className="text-right text-lg font-semibold tabular-nums text-(--positive)">
-                    {previousIncomeForTrend.toLocaleString('pl-PL')} zł
+                    {formatPln(previousIncomeForTrend)}
                   </dd>
                 </div>
                 <div className="flex items-baseline justify-between gap-4">
                   <dt className="text-base text-(--text-muted)">{t('overview.expenses')}</dt>
                   <dd className="text-right text-lg font-semibold tabular-nums text-(--tx-expense)">
-                    {previousExpensesForTrend.toLocaleString('pl-PL')} zł
+                    {formatPln(previousExpensesForTrend)}
                   </dd>
                 </div>
               </dl>
@@ -271,7 +272,7 @@ export function Overview() {
               <div>
                 <p className="text-base text-(--text-muted)">{t('overview.balanceChange')}</p>
                 <p
-                  className={`mt-1 text-2xl font-bold font-display sm:text-3xl ${
+                  className={`mt-1 text-2xl font-bold font-display tabular-nums @5xl:text-3xl ${
                     changePercent >= 0 ? 'text-(--positive)' : 'text-[#e74c3c]'
                   }`}
                 >
@@ -288,7 +289,7 @@ export function Overview() {
                     }`}
                   >
                     {balanceDeltaZloty >= 0 ? '+' : ''}
-                    {balanceDeltaZloty.toLocaleString('pl-PL')} zł
+                    {formatPln(balanceDeltaZloty)}
                   </dd>
                 </div>
                 <div className="flex items-baseline justify-between gap-4">
@@ -299,7 +300,7 @@ export function Overview() {
                     }`}
                   >
                     {currentIncomeForTrend - previousIncomeForTrend >= 0 ? '+' : ''}
-                    {(currentIncomeForTrend - previousIncomeForTrend).toLocaleString('pl-PL')} zł
+                    {formatPln((currentIncomeForTrend - previousIncomeForTrend))}
                   </dd>
                 </div>
                 <div className="flex items-baseline justify-between gap-4">
@@ -310,7 +311,7 @@ export function Overview() {
                     }`}
                   >
                     {currentExpensesForTrend - previousExpensesForTrend >= 0 ? '+' : ''}
-                    {(currentExpensesForTrend - previousExpensesForTrend).toLocaleString('pl-PL')} zł
+                    {formatPln((currentExpensesForTrend - previousExpensesForTrend))}
                   </dd>
                 </div>
               </dl>
@@ -323,19 +324,19 @@ export function Overview() {
         <Card className="border-(--accent)/20" animateEntrance={false}>
           <p className="text-base text-(--text-muted)">{t('overview.availableUntilMonthEnd')}</p>
           <p className={`text-2xl font-bold mt-1 font-display ${availableUntilMonthEnd >= 0 ? 'text-(--accent)' : 'text-[#e74c3c]'}`}>
-            {availableUntilMonthEnd.toLocaleString('pl-PL')} zł
+            {formatPln(availableUntilMonthEnd)}
           </p>
         </Card>
         <Card className="border-(--warning)/20" animateEntrance={false}>
           <p className="text-base text-(--text-muted)">{t('overview.dailyBudget')}</p>
           <p className={`text-2xl font-bold mt-1 font-display ${dailyBudget >= 0 ? 'text-(--warning)' : 'text-[#e74c3c]'}`}>
-            {dailyBudget.toLocaleString('pl-PL', { maximumFractionDigits: 0 })} zł
+            {formatPln(Math.round(dailyBudget))}
           </p>
         </Card>
         <Card className="border-(--tx-expense)/20" animateEntrance={false}>
           <p className="text-base text-(--text-muted)">{t('overview.topCategory')}</p>
           <p className="text-lg font-bold text-(--tx-expense) mt-1 font-display">{topExpenseCategory.category}</p>
-          <p className="text-sm text-(--text-muted) mt-1">{topExpenseCategory.amount.toLocaleString('pl-PL')} zł</p>
+          <p className="text-sm text-(--text-muted) mt-1">{formatPln(topExpenseCategory.amount)}</p>
         </Card>
       </motion.div>
 
@@ -351,7 +352,7 @@ export function Overview() {
                   {item.isNextMonth ? ` ${t('overview.nextMonthSuffix')}` : ''}
                 </span>
                 <span className="font-mono text-sm tabular-nums text-(--warning)">
-                  {item.amount.toLocaleString('pl-PL')} zł
+                  {formatPln(item.amount)}
                 </span>
               </div>
             ))}
