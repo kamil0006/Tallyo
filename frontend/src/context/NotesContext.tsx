@@ -45,22 +45,25 @@ interface NotesContextType {
 
 const NotesContext = createContext<NotesContextType | null>(null)
 
+/** Demo timestamps relative to now (n days ago), so the demo never looks stale. */
+const demoTimestamp = (daysBack: number) => new Date(Date.now() - daysBack * 86400000).toISOString()
+
 const DEMO_NOTES: Note[] = normalizeNotesArray([
   {
     id: '1',
     type: 'inbox',
     content: '**Spotkanie** o 15:00 – przygotować prezentację.\n\n- Slajdy 1–5\n- Demo',
     tags: ['spotkanie', 'prezentacja'],
-    createdAt: '2025-03-05T10:00:00',
-    updatedAt: '2025-03-05T10:00:00',
+    createdAt: demoTimestamp(0),
+    updatedAt: demoTimestamp(0),
   },
   {
     id: '2',
     type: 'idea',
     content: '## Pomysł: aplikacja do śledzenia nawyków\n\nIntegracja z kalendarzem i przypomnieniami.',
     tags: ['pomysł', 'app'],
-    createdAt: '2025-03-04T14:30:00',
-    updatedAt: '2025-03-04T14:30:00',
+    createdAt: demoTimestamp(1),
+    updatedAt: demoTimestamp(1),
     ideaStatus: 'nowy',
   },
   {
@@ -68,8 +71,8 @@ const DEMO_NOTES: Note[] = normalizeNotesArray([
     type: 'reference',
     content: '[React docs](https://react.dev) – hooks, useEffect, useMemo',
     tags: ['react', 'docs'],
-    createdAt: '2025-03-03T09:15:00',
-    updatedAt: '2025-03-03T09:15:00',
+    createdAt: demoTimestamp(3),
+    updatedAt: demoTimestamp(3),
     referenceKind: 'link',
     referenceUrl: 'https://react.dev',
   },

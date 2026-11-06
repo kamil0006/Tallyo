@@ -20,14 +20,6 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const { pathname } = useLocation()
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
-  const isWide =
-    pathname === '/dashboard' ||
-    pathname === '/' ||
-    pathname === '/calendar' ||
-    pathname.startsWith('/finances') ||
-    pathname.startsWith('/learning') ||
-    pathname.startsWith('/notes') ||
-    pathname.startsWith('/habits')
   const sectionKey = pathname.split('/').filter(Boolean)[0] || 'dashboard'
 
   useEffect(() => {
@@ -54,7 +46,7 @@ export function Layout({ children }: LayoutProps) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as const }}
-            className={`mx-auto ${isWide ? 'max-w-6xl' : 'max-w-4xl'}`}
+            className="mx-auto max-w-6xl"
           >
             {children}
           </motion.div>

@@ -11,7 +11,8 @@ import { getCategoryColor } from '../lib/eventCategories'
 import { SimplePageSkeleton } from '../components/skeletons'
 import { useTodos } from '../context/TodosContext'
 import { useIsMobile } from '../hooks/useIsMobile'
-import { TODO_CATEGORY_LABEL, TODO_PRIORITY_LABEL, formatTodoDueSummary, localISODate, type TodoItem } from '../lib/todoDomain'
+import { formatTodoDueSummary, localISODate, type TodoItem } from '../lib/todoDomain'
+import { useTodoDueLabels } from '../lib/useTodoDueLabels'
 
 type ViewMode = 'month' | 'week'
 type FeedFilter = 'all' | 'events' | 'todos'
@@ -19,6 +20,7 @@ type FeedFilter = 'all' | 'events' | 'todos'
 export function Calendar() {
   const navigate = useNavigate()
   const { t, i18n } = useTranslation('calendar')
+  const dueLabels = useTodoDueLabels()
   const locale = i18n.language === 'pl' ? 'pl-PL' : 'en-US'
   const dayNames = useMemo(() => t('weekDayShort', { returnObjects: true }) as string[], [t])
   const monthNames = useMemo(
@@ -477,7 +479,7 @@ export function Calendar() {
                               {t('taskBadge')}
                             </span>
                             <span className="text-sm text-(--text-muted)">
-                              {todo.dueTime ? `${todo.dueTime} · ` : ''}{TODO_CATEGORY_LABEL[todo.category]}
+                              {todo.dueTime ? `${todo.dueTime} · ` : ''}{t(`todo:categoryLabel.${todo.category}`)}
                             </span>
                           </div>
                           <div className="flex items-center gap-1">
@@ -690,7 +692,7 @@ export function Calendar() {
                             borderLeftColor: getTodoPriorityAccent(item.todo.priority),
                             backgroundColor: '#6b728014',
                           }}
-                          title={`${item.todo.text} – ${formatTodoDueSummary(item.todo.dueDate, item.todo.dueTime)} – ${t('priorityTooltip', { label: TODO_PRIORITY_LABEL[item.todo.priority] })}`}
+                          title={`${item.todo.text} – ${formatTodoDueSummary(item.todo.dueDate, item.todo.dueTime, dueLabels)} – ${t('priorityTooltip', { label: t(`todo:priorityLabel.${item.todo.priority}`) })}`}
                         >
                           <span className="inline-flex items-center gap-1">
                             {item.todo.done ? <CheckSquare2 className="w-3.5 h-3.5 shrink-0" /> : <Square className="w-3.5 h-3.5 shrink-0" />}
@@ -820,7 +822,7 @@ export function Calendar() {
                           borderLeftColor: getTodoPriorityAccent(item.todo.priority),
                           backgroundColor: '#6b728014',
                         }}
-                        title={`${item.todo.text} – ${t('priorityTooltip', { label: TODO_PRIORITY_LABEL[item.todo.priority] })}`}
+                        title={`${item.todo.text} – ${t('priorityTooltip', { label: t(`todo:priorityLabel.${item.todo.priority}`) })}`}
                       >
                         <span className="inline-flex items-center gap-1 truncate max-w-full">
                           {item.todo.done ? <CheckSquare2 className="w-3.5 h-3.5 shrink-0" /> : <Square className="w-3.5 h-3.5 shrink-0" />}
@@ -984,13 +986,13 @@ export function Calendar() {
                       </span>
                       <span className="text-base text-(--text-muted)">
                         {formatHumanDate(item.todo.dueDate ?? localISODate())}
-                        {item.todo.dueTime ? ` · ${item.todo.dueTime}` : ''} · {TODO_CATEGORY_LABEL[item.todo.category]}
+                        {item.todo.dueTime ? ` · ${item.todo.dueTime}` : ''} · {t(`todo:categoryLabel.${item.todo.category}`)}
                       </span>
                       <span
                         className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${getTodoPriorityBadgeClass(item.todo.priority)}`}
-                        title={t('priorityLabel', { label: TODO_PRIORITY_LABEL[item.todo.priority] })}
+                        title={t('priorityLabel', { label: t(`todo:priorityLabel.${item.todo.priority}`) })}
                       >
-                        {TODO_PRIORITY_LABEL[item.todo.priority]}
+                        {t(`todo:priorityLabel.${item.todo.priority}`)}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -1038,9 +1040,9 @@ export function Calendar() {
                     </span>
                     <span
                       className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium ${getTodoPriorityBadgeClass(item.todo.priority)}`}
-                      title={t('priorityLabel', { label: TODO_PRIORITY_LABEL[item.todo.priority] })}
+                      title={t('priorityLabel', { label: t(`todo:priorityLabel.${item.todo.priority}`) })}
                     >
-                      {TODO_PRIORITY_LABEL[item.todo.priority]}
+                      {t(`todo:priorityLabel.${item.todo.priority}`)}
                     </span>
                   </div>
                   <p className={`max-sm:mt-2.5 flex items-start gap-2 text-base leading-snug ${item.todo.done ? 'line-through text-(--text-muted)' : 'text-(--text-primary)'}`}>

@@ -1919,6 +1919,16 @@ function HabitGridMobileStrip({
   )
 }
 
+
+/** Label for the "+N" goal button. Free-text units like "książek" are genitive plural,
+ *  which reads wrong for 1–4 ("+1 książek"), so only short units (zł, km, h) are kept there. */
+function formatGoalStep(step: number, unit: string | null | undefined): string {
+  const u = unit?.trim()
+  if (!u) return String(step)
+  const isShortUnit = u.length <= 3 || u.endsWith('.')
+  return isShortUnit || step >= 5 ? `${step} ${u}` : String(step)
+}
+
 export function Habits() {
   const { t, i18n } = useTranslation('habits')
   const reduceMotion = useReducedMotion()
@@ -3230,7 +3240,7 @@ export function Habits() {
                           className="flex items-center gap-1 rounded-lg border border-(--accent)/40 bg-(--accent)/10 px-3 py-1.5 text-base text-(--accent) hover:bg-(--accent)/20 transition-colors"
                         >
                           <Plus className="h-3.5 w-3.5 shrink-0" />
-                          {step}{goal.unit ? ` ${goal.unit}` : ''}
+                          {formatGoalStep(step, goal.unit)}
                         </button>
                       )}
                       <button

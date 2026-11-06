@@ -4,21 +4,6 @@ export type TodoCategory = 'dom' | 'praca' | 'finanse' | 'nauka' | 'zdrowie' | '
 
 export const TODO_CATEGORIES: TodoCategory[] = ['dom', 'praca', 'finanse', 'nauka', 'zdrowie', 'inne']
 
-export const TODO_CATEGORY_LABEL: Record<TodoCategory, string> = {
-  dom: 'Dom',
-  praca: 'Praca',
-  finanse: 'Finanse',
-  nauka: 'Nauka',
-  zdrowie: 'Zdrowie',
-  inne: 'Inne',
-}
-
-export const TODO_PRIORITY_LABEL: Record<TodoPriority, string> = {
-  low: 'Niski',
-  medium: 'Średni',
-  high: 'Wysoki',
-}
-
 export interface TodoItem {
   id: string
   text: string
@@ -65,27 +50,31 @@ export function todoDateStatus(dueDate: string | null): TodoDateStatus {
   return 'upcoming'
 }
 
-const WEEKDAYS_PL = ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota']
+export interface TodoDueLabels {
+  /** BCP 47 locale for weekday/month names, e.g. "pl-PL". */
+  locale: string
+  today: string
+  tomorrow: string
+  none: string
+}
 
-/** Short due-date label in Polish (e.g. "dziś", "piątek", "12 kwi"). */
-export function formatTodoDueSummary(dueDate: string | null, dueTime: string | null): string {
-  if (!dueDate && !dueTime) return 'Bez terminu'
+/** Short due-date label, e.g. "today · 14:30", "Friday", "Nov 12" (localized). */
+export function formatTodoDueSummary(dueDate: string | null, dueTime: string | null, labels: TodoDueLabels): string {
+  if (!dueDate && !dueTime) return labels.none
+  const withTime = (label: string) => (dueTime ? `${label} · ${dueTime}` : label)
   const today = localISODate()
   const tomorrow = localISODate(new Date(Date.now() + 86400000))
-  if (dueDate === today) return dueTime ? `dziś · ${dueTime}` : 'dziś'
-  if (dueDate === tomorrow) return dueTime ? `jutro · ${dueTime}` : 'jutro'
+  if (dueDate === today) return withTime(labels.today)
+  if (dueDate === tomorrow) return withTime(labels.tomorrow)
   if (dueDate) {
     const dt = parseLocalYMD(dueDate)
     const diffDays = Math.round((dt.getTime() - parseLocalYMD(today).getTime()) / 86400000)
     if (diffDays > 1 && diffDays <= 7) {
-      const wd = WEEKDAYS_PL[dt.getDay()]
-      return dueTime ? `${wd} · ${dueTime}` : wd
+      return withTime(dt.toLocaleDateString(labels.locale, { weekday: 'long' }))
     }
-    const monthNames = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru']
-    const label = `${dt.getDate()} ${monthNames[dt.getMonth()]}`
-    return dueTime ? `${label} · ${dueTime}` : label
+    return withTime(dt.toLocaleDateString(labels.locale, { day: 'numeric', month: 'short' }))
   }
-  return dueTime ?? 'Bez terminu'
+  return dueTime ?? labels.none
 }
 
 export function normalizePriority(v: string | undefined | null): TodoPriority {

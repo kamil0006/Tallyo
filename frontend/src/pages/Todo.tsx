@@ -43,6 +43,7 @@ import {
   type TodoPriority,
   type TodoTabFilter,
 } from '../lib/todoDomain'
+import { useTodoDueLabels } from '../lib/useTodoDueLabels'
 
 const TAB_IDS: TodoTabFilter[] = ['today', 'upcoming', 'all', 'done']
 const PRIORITY_IDS: TodoPriority[] = ['low', 'medium', 'high']
@@ -263,6 +264,7 @@ function TodoTaskCard({
   onEdit: () => void
 }) {
   const { t, i18n } = useTranslation('todo')
+  const dueLabels = useTodoDueLabels()
   const reduceMotion = useReducedMotion()
   const layoutTransition = reduceMotion
     ? { duration: 0.2 }
@@ -355,7 +357,7 @@ function TodoTaskCard({
           <p className={`text-base text-(--text-muted) ${compact ? 'mt-0.5' : 'mt-1'}`}>
             {t(`categoryLabel.${todo.category}`)}
             {' · '}
-            {formatTodoDueSummary(todo.dueDate, todo.dueTime)}
+            {formatTodoDueSummary(todo.dueDate, todo.dueTime, dueLabels)}
           </p>
           {todo.noteId && (
             <p className={compact ? 'mt-0.5' : 'mt-1'}>
