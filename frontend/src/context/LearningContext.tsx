@@ -73,20 +73,25 @@ export interface Certification {
 }
 
 const currentYear = new Date().getFullYear()
-const pad = (m: number, d: number) =>
-  `${currentYear}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+
+/** Demo dates relative to today, so "this week" and charts always have data. */
+const daysAgo = (n: number) => {
+  const d = new Date()
+  d.setDate(d.getDate() - n)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
 
 const DEMO_SESSIONS: LearningSession[] = [
-  { id: '1', date: pad(4, 28), minutes: 180, topic: 'Tallyo', type: 'projekt', category: 'Backend' },
-  { id: '2', date: pad(4, 27), minutes: 120, topic: 'Backend API', type: 'projekt', category: 'Backend' },
-  { id: '3', date: pad(4, 25), minutes: 240, topic: 'Node.js API', type: 'kurs', category: 'Backend' },
-  { id: '4', date: pad(4, 22), minutes: 90, topic: 'Powtórka algorytmów', type: 'powtorka', category: 'Algorytmy' },
-  { id: '5', date: pad(4, 20), minutes: 300, topic: 'React + TypeScript', type: 'kurs', category: 'Frontend' },
-  { id: '6', date: pad(3, 28), minutes: 180, topic: 'Czysty Kod', type: 'ksiazka', category: 'Programowanie' },
-  { id: '7', date: pad(3, 15), minutes: 150, topic: 'PostgreSQL', type: 'kurs', category: 'Backend' },
-  { id: '8', date: pad(3, 8), minutes: 240, topic: 'Tallyo backend', type: 'projekt', category: 'Backend' },
-  { id: '9', date: pad(2, 18), minutes: 180, topic: 'TypeScript generics', type: 'praktyka', category: 'Frontend' },
-  { id: '10', date: pad(1, 10), minutes: 120, topic: 'Pragmatyczny Programista', type: 'ksiazka', category: 'Programowanie' },
+  { id: '1', date: daysAgo(1), minutes: 180, topic: 'Tallyo', type: 'projekt', category: 'Backend' },
+  { id: '2', date: daysAgo(2), minutes: 120, topic: 'Backend API', type: 'projekt', category: 'Backend' },
+  { id: '3', date: daysAgo(4), minutes: 240, topic: 'Node.js API', type: 'kurs', category: 'Backend' },
+  { id: '4', date: daysAgo(7), minutes: 90, topic: 'Powtórka algorytmów', type: 'powtorka', category: 'Algorytmy' },
+  { id: '5', date: daysAgo(9), minutes: 300, topic: 'React + TypeScript', type: 'kurs', category: 'Frontend' },
+  { id: '6', date: daysAgo(20), minutes: 180, topic: 'Czysty Kod', type: 'ksiazka', category: 'Programowanie' },
+  { id: '7', date: daysAgo(33), minutes: 150, topic: 'PostgreSQL', type: 'kurs', category: 'Backend' },
+  { id: '8', date: daysAgo(42), minutes: 240, topic: 'Tallyo backend', type: 'projekt', category: 'Backend' },
+  { id: '9', date: daysAgo(60), minutes: 180, topic: 'TypeScript generics', type: 'praktyka', category: 'Frontend' },
+  { id: '10', date: daysAgo(90), minutes: 120, topic: 'Pragmatyczny Programista', type: 'ksiazka', category: 'Programowanie' },
 ]
 
 const DEMO_SESSION_CATEGORIES = ['Frontend', 'Backend', 'Algorytmy', 'Programowanie', 'Angielski', 'Matematyka']
