@@ -432,7 +432,7 @@ export function Transactions() {
               <tr className="border-b border-(--border)">
                 <th className="pb-3 text-base text-(--text-muted)">{t('transactions.colDate')}</th>
                 <th className="pb-3 text-base text-(--text-muted)">{t('transactions.colName')}</th>
-                <th className="pb-3 text-base text-(--text-muted)">{t('transactions.colCategory')}</th>
+                <th className="pb-3 pr-6 text-base text-(--text-muted)">{t('transactions.colCategory')}</th>
                 <th className="pb-3 text-base text-(--text-muted)">{t('transactions.colPayment')}</th>
                 <th className="pb-3 text-base text-(--text-muted) text-right">{t('transactions.colAmount')}</th>
                 <th className="pb-3 w-20" />
@@ -452,7 +452,7 @@ export function Transactions() {
                       {formatTxDate(tx.date, i18n.language === 'pl' ? 'pl-PL' : 'en-US')}
                     </td>
                     <td className="w-full py-3 pr-4 text-base font-medium text-(--text-primary) [overflow-wrap:anywhere]">{capitalizeFirstPl(tx.name)}</td>
-                    <td className="py-3">
+                    <td className="py-3 pr-6 whitespace-nowrap">
                       {showCategoryPill ? (
                         <span
                           className="inline-flex items-center gap-1.5 rounded px-2 py-0.5 text-sm"
@@ -465,7 +465,7 @@ export function Transactions() {
                         <span className="text-sm text-(--text-muted) font-mono">{EXPENSE_CATEGORY_DISPLAY_NONE}</span>
                       )}
                     </td>
-                    <td className="py-3">
+                    <td className="py-3 whitespace-nowrap">
                       <PaymentMethodBadge method={tx.paymentMethod} />
                     </td>
                     <td
