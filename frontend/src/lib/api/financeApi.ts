@@ -1,6 +1,7 @@
 import { api } from './client'
 import type { PaymentMethod } from '../paymentMethod'
 import type { Currency } from '../currency'
+import type { AmountHistoryEntry } from '../scheduledAmountHistory'
 
 type ExpenseDto = {
   id: string
@@ -66,6 +67,8 @@ type ScheduledExpenseDto = {
   endedAt?: string | null
   /** Payment dates (YYYY-MM-DD) removed by the user — not generated as payments. */
   skippedDates?: string[]
+  /** Earlier amounts — payments before a price change keep what was charged. */
+  amountHistory?: AmountHistoryEntry[] | null
   createdAt?: string
 }
 
@@ -93,12 +96,27 @@ export const scheduledExpensesApi = {
       pausedUntil?: string | null
       reminderDaysBefore?: number | null
       note?: string | null
+      /** First payment date (YYYY-MM-DD) that uses the new amount; earlier payments keep the old one. */
+      amountEffectiveFrom?: string
     }
   ) => api<ScheduledExpenseDto>(`/scheduled-expenses/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
   delete: (id: string) => api(`/scheduled-expenses/${id}`, { method: 'DELETE' }),
   /** Removes a single payment of a recurring cost (e.g. one that was never actually paid). */
   skipOccurrence: (id: string, date: string) =>
     api<ScheduledExpenseDto>(`/scheduled-expenses/${id}/skip-occurrence`, { method: 'POST', body: JSON.stringify({ date }) }),
+  /** Edits a single payment only: it becomes a regular expense; the recurring cost itself stays unchanged. */
+  editOccurrence: (
+    id: string,
+    data: {
+      occurrenceDate: string
+      name: string
+      amount: number
+      category: string
+      date: string
+      paymentMethod: PaymentMethod
+      note?: string | null
+    }
+  ) => api<ExpenseDto>(`/scheduled-expenses/${id}/edit-occurrence`, { method: 'POST', body: JSON.stringify(data) }),
 }
 
 export const incomeApi = {

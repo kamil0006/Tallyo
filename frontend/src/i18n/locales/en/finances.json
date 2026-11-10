@@ -64,6 +64,8 @@
     "colPayment": "Payment",
     "colAmount": "Amount",
     "editRecurring": "Edit recurring cost",
+    "editRecurringPayment": "Edit payment",
+    "editRecurringPaymentHint": "Only this payment will change. To change the recurring cost for the coming months, edit it on the Recurring tab.",
     "viewNote": "View / edit note",
     "emptyTitle": "No transactions",
     "emptyDescription": "No {{kind}} found for {{period}}.",
@@ -226,7 +228,9 @@
     "dayOfMonthLabel": "Day of month (1-31)",
     "currencyLabel": "Currency",
     "convertedPreview": "≈ {{amount}} / mo. at the current NBP rate",
-    "ratesUnavailable": "Couldn't fetch the exchange rate"
+    "ratesUnavailable": "Couldn't fetch the exchange rate",
+    "effectiveFromLabel": "New amount applies from",
+    "effectiveFromHint": "Payments before this date keep the previous amount."
   },
   "netWorthAccountCreateModal": {
     "newAssetTitle": "New asset",

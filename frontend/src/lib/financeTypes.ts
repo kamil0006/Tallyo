@@ -1,5 +1,6 @@
 import type { PaymentMethod } from './paymentMethod'
 import type { Currency } from './currency'
+import type { AmountHistoryEntry } from './scheduledAmountHistory'
 
 export type ExpenseRow = {
   id: string
@@ -39,5 +40,7 @@ export type ScheduledExpenseRow = {
   endedAt?: string | null
   /** Payment dates (YYYY-MM-DD) removed by the user — not generated as payments. */
   skippedDates?: string[]
+  /** Earlier amounts — payments before a price change keep what was charged. */
+  amountHistory?: AmountHistoryEntry[] | null
   createdAt?: string
 }

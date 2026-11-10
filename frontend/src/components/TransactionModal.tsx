@@ -35,6 +35,8 @@ interface TransactionModalProps {
   } | null
   submitLabel?: string
   title?: string
+  /** Short explanation shown under the title. */
+  hint?: string
 }
 
 export function TransactionModal({
@@ -48,6 +50,7 @@ export function TransactionModal({
   initialData,
   submitLabel,
   title,
+  hint,
 }: TransactionModalProps) {
   const { t } = useTranslation('finances')
   const initialDataKey =
@@ -170,6 +173,7 @@ export function TransactionModal({
           <X className="w-5 h-5" />
         </button>
       </div>
+      {hint && <p className="-mt-2 mb-4 text-sm text-(--text-muted)">{hint}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

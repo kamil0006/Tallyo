@@ -142,31 +142,23 @@ export function Transactions() {
         editingTx.isScheduled &&
         editingTx.scheduledId
       ) {
-        const rawDay = parseInt(data.date.split('-')[2] ?? '1', 10)
-        const dayOfMonth = Number.isFinite(rawDay) ? Math.min(31, Math.max(1, rawDay)) : 1
-        // This form shows the amount already converted to PLN and doesn't know the original currency —
-        // editing here sets the amount directly in PLN (losing the link to the foreign exchange rate).
-        // Full currency editing is available in the Recurring costs module.
+        // Only this payment changes: it becomes a regular expense and the recurring cost stops
+        // generating that date. The recurring cost's amount for other months is edited on the Recurring tab.
+        const payment = {
+          name: data.name,
+          amount: data.amount,
+          category: data.category ?? EXPENSE_CATEGORY_NONE,
+          date: data.date,
+          paymentMethod: data.paymentMethod,
+          note: data.note ?? null,
+        }
         if (!useApiFinance && demoData) {
-          demoData.updateScheduledExpense(editingTx.scheduledId, {
-            name: data.name,
-            amount: data.amount,
-            currency: 'PLN',
-            originalAmount: null,
-            category: data.category ?? EXPENSE_CATEGORY_NONE,
-            dayOfMonth,
-            paymentMethod: data.paymentMethod,
-            note: data.note ?? null,
-          })
+          demoData.skipScheduledOccurrence(editingTx.scheduledId, editingTx.date)
+          demoData.addExpense(payment)
         } else {
-          await scheduledExpensesApi.update(editingTx.scheduledId, {
-            name: data.name,
-            amount: data.amount,
-            currency: 'PLN',
-            category: data.category ?? EXPENSE_CATEGORY_NONE,
-            dayOfMonth,
-            paymentMethod: data.paymentMethod,
-            note: data.note ?? null,
+          await scheduledExpensesApi.editOccurrence(editingTx.scheduledId, {
+            ...payment,
+            occurrenceDate: editingTx.date,
           })
           await invalidateFinanceQueries(queryClient, userId)
         }
@@ -494,7 +486,7 @@ export function Transactions() {
                         type="button"
                         onClick={() => handleEdit(tx)}
                         className="p-2 text-(--text-muted) transition-colors hover:text-(--accent)"
-                        title={tx.isScheduled ? t('transactions.editRecurring') : t('common:edit')}
+                        title={tx.isScheduled ? t('transactions.editRecurringPayment') : t('common:edit')}
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
@@ -575,7 +567,7 @@ export function Transactions() {
                       type="button"
                       onClick={() => handleEdit(tx)}
                       className="rounded-lg p-2 text-(--text-muted) transition-colors hover:bg-(--bg-dark) hover:text-(--accent)"
-                      aria-label={tx.isScheduled ? t('transactions.editRecurring') : t('common:edit')}
+                      aria-label={tx.isScheduled ? t('transactions.editRecurringPayment') : t('common:edit')}
                     >
                       <Pencil className="h-4 w-4" />
                     </button>
@@ -650,10 +642,11 @@ export function Transactions() {
             ? editingTx.type === 'income'
               ? t('transactions.editIncome')
               : editingTx.isScheduled
-                ? t('transactions.editRecurring')
+                ? t('transactions.editRecurringPayment')
                 : t('transactions.editExpense')
             : undefined
         }
+        hint={editingTx?.isScheduled ? t('transactions.editRecurringPaymentHint') : undefined}
       />
 
       <ConfirmDialog

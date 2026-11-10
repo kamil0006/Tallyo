@@ -7,6 +7,7 @@ import { PaymentMethodPicker } from './finance/PaymentMethodPicker'
 import { EXPENSE_CATEGORY_NONE } from '../lib/expenseCategoryConstants'
 import type { PaymentMethod } from '../lib/paymentMethod'
 import { isPaymentMethod } from '../lib/paymentMethod'
+import { todayIso } from '../lib/scheduledAmountHistory'
 import { CURRENCIES, convertToPln, fetchExchangeRates, formatCurrencyAmount, type Currency, type ForeignCurrency } from '../lib/currency'
 
 function leadingUpperPl(s: string) {
@@ -26,6 +27,8 @@ export type RecurringFormPayload = {
   dayOfMonth: number
   paymentMethod: PaymentMethod
   note?: string | null
+  /** Set when editing changed the amount: first payment date that uses it — earlier payments keep the old one. */
+  amountEffectiveFrom?: string
 }
 
 export type RecurringModalEditing = {
@@ -79,6 +82,7 @@ export function RecurringModal({
       dayOfMonthStr: '',
       paymentMethod: '' as PaymentMethod | '',
       note: '',
+      amountEffectiveFrom: todayIso(),
       showAddCategory: false,
       newCategoryName: '',
       newCategoryColor: DEFAULT_NEW_EXPENSE_CATEGORY_COLOR,
@@ -115,6 +119,7 @@ export function RecurringModal({
         paymentMethod:
           editing.paymentMethod && isPaymentMethod(editing.paymentMethod) ? editing.paymentMethod : '',
         note: editing.note ?? '',
+        amountEffectiveFrom: todayIso(),
         showAddCategory: false,
         newCategoryName: '',
         newCategoryColor: DEFAULT_NEW_EXPENSE_CATEGORY_COLOR,
@@ -124,7 +129,15 @@ export function RecurringModal({
     }
   }, [isOpen, editing, buildInitialForm])
 
-  const { name, amount, currency, category, dayOfMonthStr, paymentMethod, note, showAddCategory, newCategoryName, newCategoryColor } = form
+  const { name, amount, currency, category, dayOfMonthStr, paymentMethod, note, amountEffectiveFrom, showAddCategory, newCategoryName, newCategoryColor } = form
+
+  const amountChanged = useMemo(() => {
+    if (!editing) return false
+    const prevCurrency = editing.currency ?? 'PLN'
+    const prevAmount =
+      prevCurrency !== 'PLN' && editing.originalAmount != null ? editing.originalAmount : editing.amount
+    return currency !== prevCurrency || parseFloat(amount) !== prevAmount
+  }, [editing, amount, currency])
 
   const convertedPreview = useMemo(() => {
     if (currency === 'PLN') return null
@@ -152,6 +165,7 @@ export function RecurringModal({
       dayOfMonth: day,
       paymentMethod,
       note: note.trim() ? note.trim() : null,
+      ...(amountChanged && amountEffectiveFrom ? { amountEffectiveFrom } : {}),
     }
     if (editing && onUpdate) {
       await onUpdate(editing.id, payload)
@@ -251,6 +265,22 @@ export function RecurringModal({
             />
           </div>
         </div>
+        {amountChanged && (
+          <div>
+            <label htmlFor="recurring-effective-from" className="block text-base text-(--text-muted) font-display mb-1">
+              {t('recurringModal.effectiveFromLabel')}
+            </label>
+            <input
+              id="recurring-effective-from"
+              type="date"
+              value={amountEffectiveFrom}
+              onChange={(e) => updateField('amountEffectiveFrom', e.target.value)}
+              required
+              className="w-full px-4 py-2.5 rounded-lg bg-(--bg-dark) border border-(--border) text-(--text-primary) text-base font-display focus:border-(--accent) focus:outline-none"
+            />
+            <p className="mt-1.5 text-sm text-(--text-muted)">{t('recurringModal.effectiveFromHint')}</p>
+          </div>
+        )}
         <ExpenseCategoryPicker
           categories={categories}
           category={category}

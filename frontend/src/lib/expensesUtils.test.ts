@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mergeExpensesWithScheduled, type ExpenseLike, type ScheduledExpenseLike } from './expensesUtils'
+import { recordAmountChange } from './scheduledAmountHistory'
 
 const expense = (overrides: Partial<ExpenseLike> = {}): ExpenseLike => ({
   id: 'exp-1',
@@ -172,5 +173,35 @@ describe('mergeExpensesWithScheduled', () => {
       2026
     )
     expect(result.map((r) => r.date)).toEqual(['2026-07-05', '2026-07-20'])
+  })
+
+  describe('amount history', () => {
+    const changed = (now: Partial<ScheduledExpenseLike> = {}) => {
+      const before = scheduled({ amount: 2000 })
+      return scheduled({ ...now, amountHistory: recordAmountChange(before, '2026-08-01') })
+    }
+
+    it('keeps the old amount for payments before the change', () => {
+      const [july] = mergeExpensesWithScheduled([], [changed({ amount: 1500 })], JULY, 2026)
+      expect(july.amount).toBe(2000)
+    })
+
+    it('uses the new amount from the change date on', () => {
+      const [august] = mergeExpensesWithScheduled([], [changed({ amount: 1500 })], 7, 2026)
+      expect(august.amount).toBe(1500)
+    })
+  })
+
+  describe('single payment edited in transactions', () => {
+    it('shows the edited expense instead of the recurring payment', () => {
+      const result = mergeExpensesWithScheduled(
+        [expense({ id: 'edited', amount: 1800, date: '2026-07-10' })],
+        [scheduled({ skippedDates: ['2026-07-10'] })],
+        JULY,
+        2026
+      )
+      expect(result).toHaveLength(1)
+      expect(result[0]).toMatchObject({ id: 'edited', amount: 1800, isScheduled: false })
+    })
   })
 })
