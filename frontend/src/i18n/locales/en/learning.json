@@ -234,6 +234,9 @@
     "cardSubtitle": "30 min  ·  1 h  ·  1.5 h  ·  2 h",
     "run": "Start",
     "inlineButton": "Timer",
-    "inlineButtonTitle": "Start timer"
+    "inlineButtonTitle": "Start timer",
+    "notifyTitle": "Study session finished",
+    "indicatorAria": "Open study timer",
+    "keepsRunning": "You can close this window and go elsewhere — the timer keeps running."
   }
 }

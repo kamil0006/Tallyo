@@ -5,6 +5,7 @@ import { DemoDataProvider } from './context/DemoDataContext'
 import { MonthProvider } from './context/MonthContext'
 import { ChartPeriodProvider } from './context/ChartPeriodContext'
 import { LearningProvider } from './context/LearningContext'
+import { PomodoroProvider } from './context/PomodoroContext'
 import { NotesProvider } from './context/NotesContext'
 import { GlobalSearchProvider } from './context/GlobalSearchContext'
 import { QuickAddProvider } from './context/QuickAddContext'
@@ -70,6 +71,7 @@ function App() {
       <MonthProvider>
         <ChartPeriodProvider>
         <LearningProvider key={dataScopeKey}>
+        <PomodoroProvider>
         <NotesProvider key={dataScopeKey}>
         <GlobalSearchProvider>
         <QuickAddProvider>
@@ -120,6 +122,7 @@ function App() {
         </QuickAddProvider>
         </GlobalSearchProvider>
         </NotesProvider>
+        </PomodoroProvider>
         </LearningProvider>
         </ChartPeriodProvider>
       </MonthProvider>
