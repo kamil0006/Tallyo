@@ -236,6 +236,9 @@
     "cardSubtitle": "30 min  ·  1 h  ·  1.5 h  ·  2 h",
     "run": "Uruchom",
     "inlineButton": "Timer",
-    "inlineButtonTitle": "Uruchom timer"
+    "inlineButtonTitle": "Uruchom timer",
+    "notifyTitle": "Koniec sesji nauki",
+    "indicatorAria": "Otwórz timer nauki",
+    "keepsRunning": "Możesz zamknąć to okno i przejść gdzie indziej — timer działa dalej."
   }
 }

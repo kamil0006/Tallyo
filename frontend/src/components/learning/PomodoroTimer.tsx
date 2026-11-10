@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { createPortal } from 'react-dom'
 import { Play, Pause, RotateCcw, CheckCircle2, X, Timer } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SESSION_TYPE_OPTIONS } from '../../pages/Learning/learningUtils'
 import { usePomodoroTimer, POMODORO_MODES, POMODORO_RING } from '../../hooks/usePomodoroTimer'
+import { usePomodoro, formatClock } from '../../context/PomodoroContext'
 
 function pad(n: number) {
   return String(n).padStart(2, '0')
@@ -38,10 +38,8 @@ function PomodoroModal({ onClose }: { onClose: () => void }) {
     circumference,
   } = usePomodoroTimer()
 
-  const handleClose = () => {
-    pause()
-    onClose()
-  }
+  // Closing only hides the modal — the timer keeps running in the background.
+  const handleClose = onClose
 
   return createPortal(
     <>
@@ -50,7 +48,7 @@ function PomodoroModal({ onClose }: { onClose: () => void }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-9998 bg-black/75 backdrop-blur-sm"
-        onClick={!isRunning ? handleClose : undefined}
+        onClick={handleClose}
       />
       <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 pointer-events-none">
         <motion.div
@@ -293,6 +291,9 @@ function PomodoroModal({ onClose }: { onClose: () => void }) {
                     )}
                   </button>
                 </div>
+                {started && (
+                  <p className="mt-4 text-center text-sm text-(--text-muted)">{t('pomodoro.keepsRunning')}</p>
+                )}
               </>
             )}
           </div>
@@ -305,61 +306,103 @@ function PomodoroModal({ onClose }: { onClose: () => void }) {
 
 // ─── PUBLIC API ────────────────────────────────────────────────────────────────
 
-export function PomodoroCardButton() {
+/** Timer modal plus a small floating indicator, rendered once for the whole app (in Layout),
+ * so a running session stays visible and reachable from any page. */
+export function GlobalPomodoro() {
   const { t } = useTranslation('learning')
-  const [open, setOpen] = useState(false)
+  const { isOpen, open, close, status, timeLeft, reset } = usePomodoro()
+
+  const handleClose = () => {
+    // A finished session has been saved — clear it so the indicator goes away.
+    if (status === 'completed') reset()
+    close()
+  }
+
+  const showIndicator = !isOpen && status !== 'idle'
+
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="w-full flex items-center justify-between px-5 py-5 rounded-xl border border-(--accent)/30 bg-(--accent)/5 hover:bg-(--accent)/10 hover:border-(--accent)/60 transition-all group"
-      >
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-(--accent)/15 flex items-center justify-center group-hover:bg-(--accent)/25 transition-colors shrink-0">
-            <Timer className="w-6 h-6 text-(--accent)" />
-          </div>
-          <div className="text-left">
-            <p className="font-display font-bold text-(--text-primary) text-base tracking-wide">
-              {t('pomodoro.cardTitle')}
-            </p>
-            <p className="text-sm text-(--text-muted) mt-0.5">
-              {t('pomodoro.cardSubtitle')}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 text-(--accent) opacity-70 group-hover:opacity-100 transition-opacity">
-          <span className="font-display text-sm hidden sm:block">{t('pomodoro.run')}</span>
-          <Play className="w-5 h-5" />
-        </div>
-      </button>
+      <AnimatePresence>{isOpen && <PomodoroModal key="pomodoro" onClose={handleClose} />}</AnimatePresence>
       <AnimatePresence>
-        {open && <PomodoroModal key="pomodoro" onClose={() => setOpen(false)} />}
+        {showIndicator && (
+          <motion.button
+            key="pomodoro-indicator"
+            type="button"
+            onClick={open}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            aria-label={t('pomodoro.indicatorAria')}
+            className={`fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 flex items-center gap-2 rounded-full border px-4 py-2.5 font-display text-base shadow-xl backdrop-blur-md transition-colors lg:right-6 lg:bottom-6 ${
+              status === 'completed'
+                ? 'border-(--positive)/50 bg-(--bg-card)/95 text-(--positive)'
+                : status === 'paused'
+                  ? 'border-(--warning)/50 bg-(--bg-card)/95 text-(--warning)'
+                  : 'border-(--accent)/50 bg-(--bg-card)/95 text-(--accent)'
+            }`}
+          >
+            {status === 'completed' ? (
+              <CheckCircle2 className="h-5 w-5" />
+            ) : status === 'paused' ? (
+              <Pause className="h-5 w-5" />
+            ) : (
+              <span className="h-2 w-2 rounded-full bg-(--accent) animate-pulse" />
+            )}
+            <span className="tabular-nums">
+              {status === 'completed' ? t('pomodoro.completed') : formatClock(timeLeft)}
+            </span>
+          </motion.button>
+        )}
       </AnimatePresence>
     </>
   )
 }
 
+export function PomodoroCardButton() {
+  const { t } = useTranslation('learning')
+  const { open } = usePomodoro()
+  return (
+    <button
+      type="button"
+      onClick={open}
+      className="w-full flex items-center justify-between px-5 py-5 rounded-xl border border-(--accent)/30 bg-(--accent)/5 hover:bg-(--accent)/10 hover:border-(--accent)/60 transition-all group"
+    >
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-(--accent)/15 flex items-center justify-center group-hover:bg-(--accent)/25 transition-colors shrink-0">
+          <Timer className="w-6 h-6 text-(--accent)" />
+        </div>
+        <div className="text-left">
+          <p className="font-display font-bold text-(--text-primary) text-base tracking-wide">
+            {t('pomodoro.cardTitle')}
+          </p>
+          <p className="text-sm text-(--text-muted) mt-0.5">
+            {t('pomodoro.cardSubtitle')}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 text-(--accent) opacity-70 group-hover:opacity-100 transition-opacity">
+        <span className="font-display text-sm hidden sm:block">{t('pomodoro.run')}</span>
+        <Play className="w-5 h-5" />
+      </div>
+    </button>
+  )
+}
+
 export function PomodoroInlineButton({ className }: { className?: string }) {
   const { t } = useTranslation('learning')
-  const [open, setOpen] = useState(false)
+  const { open } = usePomodoro()
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className={
-          className ??
-          'flex items-center gap-1.5 rounded-lg border border-(--accent)/30 bg-(--accent)/10 px-3 py-1.5 text-sm font-display text-(--accent) transition-colors hover:bg-(--accent)/20'
-        }
-        title={t('pomodoro.inlineButtonTitle')}
-      >
-        <Timer className="h-3.5 w-3.5 shrink-0" />
-        {t('pomodoro.inlineButton')}
-      </button>
-      <AnimatePresence>
-        {open && <PomodoroModal key="pomodoro" onClose={() => setOpen(false)} />}
-      </AnimatePresence>
-    </>
+    <button
+      type="button"
+      onClick={open}
+      className={
+        className ??
+        'flex items-center gap-1.5 rounded-lg border border-(--accent)/30 bg-(--accent)/10 px-3 py-1.5 text-sm font-display text-(--accent) transition-colors hover:bg-(--accent)/20'
+      }
+      title={t('pomodoro.inlineButtonTitle')}
+    >
+      <Timer className="h-3.5 w-3.5 shrink-0" />
+      {t('pomodoro.inlineButton')}
+    </button>
   )
 }
