@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { amountHistorySchema } from './scheduledAmountHistory.js'
 
 /** Validates data uploaded during backup restore — permissive about free text,
  * but strict about the types and fields that drive app logic (enums, IDs). */
@@ -46,6 +47,8 @@ export const scheduledExpenseBackupSchema = z.object({
   endedAt: nullableDate.optional(),
   /** Payments removed by the user — without it, restored backups would revive them. */
   skippedDates: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)).max(MAX_SKIPPED_DATES).optional(),
+  /** Earlier amounts — without it, restored backups would rewrite past payments with the current price. */
+  amountHistory: amountHistorySchema.optional(),
   createdAt: dateVal,
 })
 

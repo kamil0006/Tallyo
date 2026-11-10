@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { mergeExpensesWithScheduled, type MergedExpense } from '../lib/expensesUtils'
+import { mergeExpensesWithScheduled, type MergedExpense, type ScheduledExpenseLike } from '../lib/expensesUtils'
 import { useMonth, inMonth, parseDate } from '../context/MonthContext'
 import { EXPENSE_CATEGORY_NONE } from '../lib/expenseCategoryConstants'
 import type { PaymentMethod } from '../lib/paymentMethod'
@@ -46,21 +46,7 @@ export interface UseTransactionsListParams {
     paymentMethod?: PaymentMethod | null
     note?: string | null
   }[]
-  effectiveScheduled: {
-    id: string
-    name: string
-    amount: number
-    currency?: string
-    originalAmount?: number | null
-    category: string
-    dayOfMonth: number
-    active: boolean
-    paymentMethod?: PaymentMethod | null
-    pausedUntil?: string | null
-    reminderDaysBefore?: number | null
-    note?: string | null
-    createdAt?: string
-  }[]
+  effectiveScheduled: ScheduledExpenseLike[]
   effectiveIncome: {
     id: string
     source: string

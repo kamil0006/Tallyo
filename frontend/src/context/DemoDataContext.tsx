@@ -2,6 +2,7 @@ import { createContext, useContext, useState, type ReactNode } from 'react'
 import type { PaymentMethod } from '../lib/paymentMethod'
 import { isPaymentMethod } from '../lib/paymentMethod'
 import type { Currency } from '../lib/currency'
+import { recordAmountChange, todayIso, type AmountHistoryEntry } from '../lib/scheduledAmountHistory'
 
 export interface DemoExpense {
   id: string
@@ -43,6 +44,8 @@ export interface DemoScheduledExpense {
   endedAt?: string | null
   /** Payment dates (YYYY-MM-DD) removed by the user — not generated as payments. */
   skippedDates?: string[]
+  /** Earlier amounts — payments before a price change keep what was charged. */
+  amountHistory?: AmountHistoryEntry[] | null
   /** When the recurring expense was added — not shown in months before this date. */
   createdAt?: string
 }
@@ -69,7 +72,12 @@ interface DemoDataContextType {
   restoreIncome: (i: DemoIncome) => void
   deleteIncome: (id: string) => void
   addScheduledExpense: (e: Omit<DemoScheduledExpense, 'id'>) => void
-  updateScheduledExpense: (id: string, e: Partial<DemoScheduledExpense>) => void
+  /** `amountEffectiveFrom`: first payment date that uses a changed amount — earlier payments keep the old one. */
+  updateScheduledExpense: (
+    id: string,
+    e: Partial<DemoScheduledExpense>,
+    opts?: { amountEffectiveFrom?: string }
+  ) => void
   deleteScheduledExpense: (id: string) => void
   skipScheduledOccurrence: (id: string, date: string) => void
   updateNetWorthPosition: (key: NetWorthPositionKey, delta: number) => void
@@ -404,9 +412,26 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     })
   }
 
-  const updateScheduledExpense = (id: string, updates: Partial<DemoScheduledExpense>) => {
+  const updateScheduledExpense = (
+    id: string,
+    updates: Partial<DemoScheduledExpense>,
+    opts?: { amountEffectiveFrom?: string }
+  ) => {
     setScheduledExpenses((prev) => {
-      const next = prev.map((x) => (x.id === id ? { ...x, ...updates } : x))
+      const next = prev.map((x) => {
+        if (x.id !== id) return x
+        const currency = updates.currency ?? x.currency ?? 'PLN'
+        // Foreign-currency costs compare the amount in their own currency, not the converted PLN value.
+        const amountChanged =
+          currency !== (x.currency ?? 'PLN') ||
+          (currency === 'PLN'
+            ? updates.amount !== undefined && updates.amount !== x.amount
+            : updates.originalAmount !== undefined && updates.originalAmount !== (x.originalAmount ?? null))
+        const amountHistory = amountChanged
+          ? recordAmountChange(x, opts?.amountEffectiveFrom ?? todayIso())
+          : x.amountHistory
+        return { ...x, ...updates, amountHistory }
+      })
       try {
         localStorage.setItem(DEMO_SCHEDULED_STORAGE_KEY, JSON.stringify(next))
       } catch {

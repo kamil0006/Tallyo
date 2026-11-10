@@ -66,6 +66,8 @@
     "colPayment": "Płatność",
     "colAmount": "Kwota",
     "editRecurring": "Edytuj stały koszt",
+    "editRecurringPayment": "Edytuj płatność",
+    "editRecurringPaymentHint": "Zmienisz tylko tę płatność. Kwotę stałego kosztu na kolejne miesiące zmienisz w zakładce Stałe koszty.",
     "viewNote": "Zobacz / edytuj notatkę",
     "emptyTitle": "Brak transakcji",
     "emptyDescription": "Nie znaleziono {{kind}} w okresie {{period}}.",
@@ -228,7 +230,9 @@
     "dayOfMonthLabel": "Dzień miesiąca (1-31)",
     "currencyLabel": "Waluta",
     "convertedPreview": "≈ {{amount}} / mies. wg bieżącego kursu NBP",
-    "ratesUnavailable": "Nie udało się pobrać kursu waluty"
+    "ratesUnavailable": "Nie udało się pobrać kursu waluty",
+    "effectiveFromLabel": "Nowa kwota obowiązuje od",
+    "effectiveFromHint": "Płatności sprzed tej daty zostają z dotychczasową kwotą."
   },
   "netWorthAccountCreateModal": {
     "newAssetTitle": "Nowe aktywo",

@@ -1,4 +1,6 @@
 import type { PaymentMethod } from './paymentMethod'
+import type { Currency } from './currency'
+import { amountAt, type AmountHistoryEntry } from './scheduledAmountHistory'
 
 export interface ExpenseLike {
   id: string
@@ -14,8 +16,10 @@ export interface ScheduledExpenseLike {
   id: string
   name: string
   amount: number
-  currency?: string
+  currency?: Currency
   originalAmount?: number | null
+  /** Earlier amounts — payments before a price change keep what was charged. */
+  amountHistory?: AmountHistoryEntry[] | null
   category: string
   dayOfMonth: number
   active: boolean
@@ -95,12 +99,13 @@ export function mergeExpensesWithScheduled<E extends ExpenseLike, S extends Sche
       if (s.pausedUntil && s.pausedUntil >= date) return acc
       if (isEndedBefore(s, date)) return acc
       if (isSkipped(s, date)) return acc
+      const charged = amountAt(s, date)
       acc.push({
         id: `scheduled-${s.id}-${date}`,
         name: s.name,
-        amount: s.amount,
-        currency: s.currency,
-        originalAmount: s.originalAmount ?? null,
+        amount: charged.amount,
+        currency: charged.currency,
+        originalAmount: charged.originalAmount ?? null,
         category: s.category,
         date,
         paymentMethod: s.paymentMethod ?? null,

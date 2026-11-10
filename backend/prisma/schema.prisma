@@ -104,6 +104,9 @@ model ScheduledExpense {
   endedAt    DateTime?
   /// Occurrence dates (YYYY-MM-DD) removed by the user, e.g. charged by mistake — not generated as payments
   skippedDates String[] @default([])
+  /// Earlier amounts: [{ until: "YYYY-MM-DD", amount, currency, originalAmount }] — payments on or before `until`
+  /// keep that amount, so changing the price does not rewrite payments that were already charged
+  amountHistory Json @default("[]")
   createdAt  DateTime @default(now())
 
   @@index([userId])

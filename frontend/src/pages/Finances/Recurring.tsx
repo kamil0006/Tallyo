@@ -136,10 +136,13 @@ export function Recurring() {
       dayOfMonth?: number
       paymentMethod?: PaymentMethod
       note?: string | null
+      amountEffectiveFrom?: string
     }
   ) => {
-    if (!useApiFinance && demoData) demoData.updateScheduledExpense(id, updates)
-    else {
+    if (!useApiFinance && demoData) {
+      const { amountEffectiveFrom, ...demoUpdates } = updates
+      demoData.updateScheduledExpense(id, demoUpdates, { amountEffectiveFrom })
+    } else {
       // originalAmount is server-derived from amount+currency; not part of the update endpoint's contract
       const { originalAmount, ...apiUpdates } = updates
       void originalAmount
